@@ -9,6 +9,10 @@ const cardSize = 300
 const cardPadCount = 3
 const carouselWidth = clamp(window.innerWidth, 0, 960)
 
+function log (text) {
+  document.getElementById('console').innerText = text
+}
+
 function CarouselContainer (props) {
   const {cursor, active, dragging, ...rest} = props
   let current = -Math.round(cursor) % data.length
@@ -54,6 +58,7 @@ class App extends Component {
       <div
         key={index}
         className='carousel-card'
+        onClick={() => log(`clicked card ${1 + modIndex}`)}
       >
         <div
           className='carousel-card-inner'

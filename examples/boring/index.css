@@ -43,6 +43,7 @@ h1 {
   text-align: center;
   font-weight: bold;
   color: white;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .carousel-card-inner {

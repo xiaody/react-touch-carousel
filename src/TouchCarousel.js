@@ -22,6 +22,7 @@ class TouchCarousel extends React.PureComponent {
     this.touchCount = 0
     this.touchMoves = []
     this.autoplayTimer = null
+    this.grabbing = false
   }
 
   componentDidMount () {
@@ -37,15 +38,22 @@ class TouchCarousel extends React.PureComponent {
     this.setState({active: true})
     this.stopAutoplay()
     this.touchMoves = []
-    // When user grabs the scroll, cancel the spring effect.
-    this.setCursor(this.usedCursor)
-      .then(this.modCursor)
+    const {cardSize, clickTolerance} = this.props
+    this.grabbing = cardSize * Math.abs(this.usedCursor - this.state.cursor) > clickTolerance
+    if (this.grabbing) {
+      // When user grabs the scroll, cancel the spring effect.
+      this.setCursor(this.usedCursor)
+        .then(this.modCursor)
+    } else {
+      this.modCursor()
+    }
   }
 
   onTouchMove = (e) => {
     // NOTE: in Chrome 56+ touchmove event listeners are passive by default,
     // please use CSS `touch-action` for it.
     e.preventDefault()
+    this.grabbing = false
 
     const touchMove = new TouchMoveRecord(e)
     if (this.state.active && this.touchMoves.length) {
@@ -67,6 +75,13 @@ class TouchCarousel extends React.PureComponent {
     if (this.touchCount > 0) {
       return
     }
+
+    // prevent click event for grab actions
+    if (this.grabbing) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
     if (this.state.dragging) {
       const {cardSize, moveScale, vertical} = this.props
       const damping = this.props.damping / 1e3
@@ -208,9 +223,10 @@ TouchCarousel.defaultProps = {
   autoplay: 0,
   vertical: false,
   renderCard () {},
-  precision: 0.0001,
+  precision: 0.001,
   moveScale: 1,
-  damping: 1
+  damping: 1,
+  clickTolerance: 16,
 }
 
 export default TouchCarousel
