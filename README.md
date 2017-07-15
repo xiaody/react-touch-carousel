@@ -25,7 +25,7 @@ npm install --save react-touch-carousel
 ## Usage
 
 ```jsx
-import TouchCarousel from 'react-touch-carousel
+import TouchCarousel from 'react-touch-carousel'
 
 const listOfData = [
   // your data array here
