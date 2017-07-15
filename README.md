@@ -83,7 +83,7 @@ listen to vertical touch moves instead of horizontal ones
 
 tail to head, head to tail
 
-### autoplay {Number}
+### props.autoplay {Number}
 
 interval in milliseconds, 0 as disabled
 
