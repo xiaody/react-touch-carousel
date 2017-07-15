@@ -4,7 +4,7 @@
 
 # react-touch-carousel
 
-Micro carousel framework for React.JS https://xiaody.github.io/react-touch-carousel/
+Micro carousel framework for React.JS https://xiaody.github.io/react-touch-carousel/docs/
 
 Yes, there are [a][slick] [few][Swiper] [carousel][Owl Carousel 2] [libraries][react-swipe] out there.
 Most of them are powerful, well tested, easy to use for common usage,
