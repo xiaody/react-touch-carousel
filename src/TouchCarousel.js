@@ -226,7 +226,7 @@ TouchCarousel.defaultProps = {
   precision: 0.001,
   moveScale: 1,
   damping: 1,
-  clickTolerance: 16,
+  clickTolerance: 16
 }
 
 export default TouchCarousel
