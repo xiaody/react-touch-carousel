@@ -208,7 +208,7 @@ TouchCarousel.defaultProps = {
   autoplay: 0,
   vertical: false,
   renderCard () {},
-  precision: 0.01,
+  precision: 0.0001,
   moveScale: 1,
   damping: 1
 }
