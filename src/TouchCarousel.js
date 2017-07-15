@@ -116,7 +116,8 @@ class TouchCarousel extends React.PureComponent {
   }
 
   setCursor = (cursor, allowOverScroll) => {
-    let used = precision(cursor, this.props.precision)
+    cursor = precision(cursor, this.props.precision)
+    let used = cursor
     if (!this.props.loop) {
       used = clamp(cursor, 1 - this.props.cardCount, 0)
     }
