@@ -1,7 +1,7 @@
 import React from 'react'
 import {Motion, spring} from 'react-motion'
 import {
-  range, clamp, precision,
+  range, clamp, precision as calcPrecision,
   getTouchPosition, getTouchId
 } from './utils'
 
@@ -38,6 +38,7 @@ class TouchCarousel extends React.PureComponent {
   }
 
   onTouchStart = (e) => {
+    const oldTouchCount = this.touchCount
     this.touchCount += e.changedTouches.length
     this.setState({active: true})
     this.tracingTouchId = getTouchId(e)
@@ -48,8 +49,12 @@ class TouchCarousel extends React.PureComponent {
     // Otherwise it's only a grab.
     this.grabbing = cardSize * Math.abs(this.usedCursor - this.state.cursor) > clickTolerance
     // When user clicks or grabs the scroll, cancel the spring effect.
-    this.setCursor(this.usedCursor)
-      .then(this.modCursor)
+    if (!oldTouchCount) {
+      this.setCursor(this.usedCursor)
+        .then(this.modCursor)
+    } else {
+      this.modCursor()
+    }
   }
 
   onTouchMove = (e) => {
@@ -145,21 +150,9 @@ class TouchCarousel extends React.PureComponent {
     })
   }
 
-  setCursor = (cursor, allowOverScroll) => {
-    cursor = precision(cursor, this.props.precision)
-    let used = cursor
-    if (!this.props.loop) {
-      used = clamp(cursor, 1 - this.props.cardCount, 0)
-    }
-    if (allowOverScroll && cursor !== used) {
-      if (cursor > used) {
-        used += 1 - 1 / (cursor - used + 1)
-      } else {
-        used -= 1 - 1 / (used - cursor + 1)
-      }
-    }
+  setCursor = (cursor) => {
     return new Promise(resolve => {
-      this.setState({cursor: used}, resolve)
+      this.setState({cursor}, resolve)
     })
   }
 
@@ -192,17 +185,32 @@ class TouchCarousel extends React.PureComponent {
       component: Component,
       cardSize, cardCount,
       cardPadCount, renderCard,
-      stiffness, damping, precision,
+      stiffness, damping, precision, maxOverflow,
       loop, moveScale, autoplay, vertical, clickTolerance,
       ...rest
     } = this.props
     const {cursor, active, dragging, moding} = this.state
     const padCount = loop ? cardPadCount : 0
     const springConfig = {stiffness, damping, precision}
+
+    let computedCursor = cursor
+    if (!this.props.loop) {
+      computedCursor = clamp(computedCursor, 1 - cardCount, 0)
+      if (dragging && cursor > 0) {
+        computedCursor = maxOverflow - maxOverflow / (cursor + 1)
+      } else if (dragging && cursor < 1 - cardCount) {
+        computedCursor = 1 - cardCount - maxOverflow + maxOverflow / (1 - cardCount - cursor + 1)
+      }
+    }
+
     return (
       <Motion
-        defaultStyle={{cursor}}
-        style={{cursor: (dragging || moding) ? cursor : spring(cursor, springConfig)}}
+        defaultStyle={{cursor: computedCursor}}
+        style={{
+          cursor: (dragging || moding)
+            ? calcPrecision(computedCursor, precision)
+            : spring(computedCursor, springConfig)
+        }}
       >
         {({cursor}) => {
           this.usedCursor = cursor
@@ -244,6 +252,7 @@ TouchCarousel.defaultProps = {
   moveScale: 1,
   stiffness: 200,
   damping: 25,
+  maxOverflow: 0.33,
   clickTolerance: 2
 }
 

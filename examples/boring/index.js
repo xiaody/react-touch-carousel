@@ -5,8 +5,12 @@ import data from '../data'
 import TouchCarousel, {clamp} from '../../src'
 import './index.css'
 
+const query = window.location.search.slice(1)
+const enableLoop = /\bloop\b/.test(query)
+const enableAutoplay = /\bautoplay\b/.test(query)
+
 const cardSize = 300
-const cardPadCount = 3
+const cardPadCount = enableLoop ? 3 : 0
 const carouselWidth = clamp(window.innerWidth, 0, 960)
 
 function log (text) {
@@ -78,7 +82,8 @@ class App extends Component {
         cardSize={cardSize}
         cardCount={data.length}
         cardPadCount={cardPadCount}
-        autoplay={12e3}
+        loop={enableLoop}
+        autoplay={enableAutoplay ? 2e3 : false}
         renderCard={this.renderCard}
       />
     )
@@ -90,5 +95,16 @@ document.addEventListener('DOMContentLoaded', function () {
   render(<App />, ndRoot)
   if (!('ontouchmove' in window)) {
     document.getElementById('mobile-tip').removeAttribute('hidden')
+  }
+
+  let optionExplain = []
+  if (enableLoop) {
+    optionExplain.push('loop')
+  }
+  if (enableAutoplay) {
+    optionExplain.push('autoplay=2000')
+  }
+  if (optionExplain.length) {
+    document.getElementById('option-explain').textContent = optionExplain.join(' ')
   }
 })
