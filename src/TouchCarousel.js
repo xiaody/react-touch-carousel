@@ -16,7 +16,7 @@ class TouchCarousel extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      cursor: 0,
+      cursor: props.defaultCursor,
       active: false,
       dragging: false,
       moding: false
@@ -144,15 +144,60 @@ class TouchCarousel extends React.PureComponent {
     }
   }
 
+  go = (n) => {
+    return this.modCursor().then(() => {
+      // n must be in range here.
+      // That's why next()/prev() don't use this method.
+      this.setCursor(n)
+    })
+  }
+
   next = () => {
-    this.modCursor().then(() => {
+    return this.modCursor().then(() => {
       this.setCursor(this.state.cursor - 1)
+    })
+  }
+
+  prev = () => {
+    return this.modCursor().then(() => {
+      this.setCursor(this.state.cursor + 1)
     })
   }
 
   setCursor = (cursor) => {
     return new Promise(resolve => {
       this.setState({cursor}, resolve)
+    })
+  }
+
+  getCursor () {
+    return this.state.cursor
+  }
+
+  getComputedCursor () {
+    const {cardCount, loop, maxOverflow} = this.props
+    const {cursor, dragging} = this.state
+    let computedCursor = cursor
+    if (!loop) {
+      computedCursor = clamp(computedCursor, 1 - cardCount, 0)
+      if (dragging && cursor > 0) {
+        computedCursor = maxOverflow - maxOverflow / (cursor + 1)
+      } else if (dragging && cursor < 1 - cardCount) {
+        computedCursor = 1 - cardCount - maxOverflow + maxOverflow / (1 - cardCount - cursor + 1)
+      }
+    }
+    return computedCursor
+  }
+
+  getUsedCursor () {
+    return this.usedCursor
+  }
+
+  modeAs = (cursor) => {
+    return new Promise(resolve => {
+      this.setState({moding: true, cursor}, () => {
+        this.setState({moding: false}, resolve)
+      })
     })
   }
 
@@ -171,9 +216,7 @@ class TouchCarousel extends React.PureComponent {
         newCursor += cardCount
       }
       if (newCursor !== cursor) {
-        this.setState({moding: true, cursor: newCursor}, () => {
-          this.setState({moding: false}, resolve)
-        })
+        this.modeAs(newCursor).then(resolve)
       } else {
         resolve()
       }
@@ -186,22 +229,13 @@ class TouchCarousel extends React.PureComponent {
       cardSize, cardCount,
       cardPadCount, renderCard,
       stiffness, damping, precision, maxOverflow,
-      loop, moveScale, autoplay, vertical, clickTolerance,
+      defaultCursor, loop, moveScale, autoplay, vertical, clickTolerance,
       ...rest
     } = this.props
-    const {cursor, active, dragging, moding} = this.state
+    const {active, dragging, moding} = this.state
     const padCount = loop ? cardPadCount : 0
     const springConfig = {stiffness, damping, precision}
-
-    let computedCursor = cursor
-    if (!this.props.loop) {
-      computedCursor = clamp(computedCursor, 1 - cardCount, 0)
-      if (dragging && cursor > 0) {
-        computedCursor = maxOverflow - maxOverflow / (cursor + 1)
-      } else if (dragging && cursor < 1 - cardCount) {
-        computedCursor = 1 - cardCount - maxOverflow + maxOverflow / (1 - cardCount - cursor + 1)
-      }
-    }
+    const computedCursor = this.getComputedCursor()
 
     return (
       <Motion
@@ -244,6 +278,7 @@ TouchCarousel.defaultProps = {
   cardSize: global.innerWidth || 320,
   cardCount: 1,
   cardPadCount: 2,
+  defaultCursor: 0,
   loop: true,
   autoplay: 0,
   vertical: false,

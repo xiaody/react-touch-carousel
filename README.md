@@ -87,6 +87,27 @@ tail to head, head to tail
 
 interval in milliseconds, 0 as disabled
 
+### props.defaultCursor {Number}
+
+the cursor value for initial render
+
+notice the sign of the number, normally it should be negative or zero(default)
+
+## Advanced options
+
+There are some advanced options, but normally you don't need to touch them.
+
+So I don't write their docs for now.
+
+## Methods
+
+You know that React allows you to get the ref of a component.
+
+This component expose some methods like `go()`, `next()`, `prev()`,
+but normally you don't need them I guess.
+
+So I don't write their docs for now.
+
 
 [slick]: https://kenwheeler.github.io/slick/
 [Swiper]: http://idangero.us/swiper/
