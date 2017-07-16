@@ -1,6 +1,6 @@
 {
   "name": "react-touch-carousel",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Micro carousel framework for React.JS",
   "main": "lib/index.js",
   "files": [
