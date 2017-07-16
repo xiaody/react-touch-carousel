@@ -1,6 +1,9 @@
 import React from 'react'
 import {Motion, spring} from 'react-motion'
-import {range, clamp, precision, getTouchPosition} from './utils'
+import {
+  range, clamp, precision,
+  getTouchPosition, getTouchId
+} from './utils'
 
 function TouchMoveRecord (e) {
   const {x, y} = getTouchPosition(e)
@@ -23,6 +26,7 @@ class TouchCarousel extends React.PureComponent {
     this.touchMoves = []
     this.autoplayTimer = null
     this.grabbing = false
+    this.tracingTouchId = null
   }
 
   componentDidMount () {
@@ -33,27 +37,33 @@ class TouchCarousel extends React.PureComponent {
     this.stopAutoplay()
   }
 
-  onTouchStart = () => {
-    this.touchCount++
+  onTouchStart = (e) => {
+    this.touchCount += e.changedTouches.length
     this.setState({active: true})
+    this.tracingTouchId = getTouchId(e)
     this.stopAutoplay()
     this.touchMoves = []
     const {cardSize, clickTolerance} = this.props
+    // User click a card before it's in place but near, allow the clicking.
+    // Otherwise it's only a grab.
     this.grabbing = cardSize * Math.abs(this.usedCursor - this.state.cursor) > clickTolerance
-    if (this.grabbing) {
-      // When user grabs the scroll, cancel the spring effect.
-      this.setCursor(this.usedCursor)
-        .then(this.modCursor)
-    } else {
-      this.modCursor()
-    }
+    // When user clicks or grabs the scroll, cancel the spring effect.
+    this.setCursor(this.usedCursor)
+      .then(this.modCursor)
   }
 
   onTouchMove = (e) => {
+    // Prevent the default action i.e. page scroll.
     // NOTE: in Chrome 56+ touchmove event listeners are passive by default,
     // please use CSS `touch-action` for it.
     e.preventDefault()
     this.grabbing = false
+
+    const touchId = getTouchId(e)
+    if (touchId !== this.tracingTouchId) {
+      this.touchMoves = []
+    }
+    this.tracingTouchId = touchId
 
     const touchMove = new TouchMoveRecord(e)
     if (this.state.active && this.touchMoves.length) {
@@ -71,8 +81,9 @@ class TouchCarousel extends React.PureComponent {
   }
 
   onTouchEnd = (e) => {
-    this.touchCount--
+    this.touchCount -= e.changedTouches.length
     if (this.touchCount > 0) {
+      this.touchMoves = []
       return
     }
 
@@ -82,9 +93,11 @@ class TouchCarousel extends React.PureComponent {
       e.stopPropagation()
     }
 
-    if (this.state.dragging) {
+    // Due to multi-touch, records can be empty even if .dragging is true.
+    // So check both.
+    if (this.state.dragging && this.touchMoves.length) {
       const {cardSize, moveScale, vertical} = this.props
-      const damping = this.props.damping / 1e3
+      const damping = this.props.damping / 1e6
       const {touchMoves} = this
       let i = touchMoves.length
       let duration = 0
@@ -102,12 +115,14 @@ class TouchCarousel extends React.PureComponent {
         Math.ceil(cursor) - cursor
       )
       this.setCursor(Math.round(cursor + cursorDelta))
+      this.touchMoves = []
     } else {
       // User grabs and then releases without any move in between.
       // Snap the cursor.
       this.setCursor(Math.round(this.state.cursor))
     }
     this.setState({active: false, dragging: false})
+    this.tracingTouchId = null
     this.autoplayIfEnabled()
   }
 
@@ -177,15 +192,17 @@ class TouchCarousel extends React.PureComponent {
       component: Component,
       cardSize, cardCount,
       cardPadCount, renderCard,
-      loop, moveScale, damping, autoplay, vertical, precision, clickTolerance,
+      stiffness, damping, precision,
+      loop, moveScale, autoplay, vertical, clickTolerance,
       ...rest
     } = this.props
     const {cursor, active, dragging, moding} = this.state
     const padCount = loop ? cardPadCount : 0
+    const springConfig = {stiffness, damping, precision}
     return (
       <Motion
         defaultStyle={{cursor}}
-        style={{cursor: (dragging || moding) ? cursor : spring(cursor)}}
+        style={{cursor: (dragging || moding) ? cursor : spring(cursor, springConfig)}}
       >
         {({cursor}) => {
           this.usedCursor = cursor
@@ -225,8 +242,9 @@ TouchCarousel.defaultProps = {
   renderCard () {},
   precision: 0.001,
   moveScale: 1,
-  damping: 1,
-  clickTolerance: 16
+  stiffness: 200,
+  damping: 25,
+  clickTolerance: 2
 }
 
 export default TouchCarousel

@@ -26,3 +26,7 @@ export function getTouchPosition (e) {
     y: e.changedTouches[0].pageY
   }
 }
+
+export function getTouchId (e) {
+  return e.changedTouches[0].identifier
+}
