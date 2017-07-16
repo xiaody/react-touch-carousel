@@ -1,0 +1,98 @@
+html, body {
+  margin: 0;
+}
+
+.ui-center {
+  text-align: center;
+}
+
+h1 {
+  margin: 1.5em;
+  font-size: 24px;
+  text-align: center;
+}
+
+#mobile-tip {
+  text-align: center;
+}
+
+#mobile-tip:not([hidden]) ~ #react-root {
+  opacity: 0.1;
+}
+
+.carousel-container {
+  position: relative;
+  height: 300px;
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel-card {
+  flex: 0 0 300px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-card-inner {
+  position: relative;
+  flex-direction: column;
+  width: 290px;
+  height: 290px;
+  border-radius: 5px;
+}
+
+.carousel-title {
+  margin-top: 20px;
+  font-size: 1.5em;
+}
+
+.carousel-text {
+  padding: 1em;
+  font-size: 14px;
+  white-space: pre-wrap;
+  text-align: left;
+  font-family: sans-serif;
+}
+
+.carousel-pagination-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.carousel-pagination {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  width: 180px;
+  padding: 0;
+}
+
+.carousel-pagination li {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(50, 50, 50, 0.5);
+}
+
+.carousel-pagination .current {
+  border-radius: 0;
+  background: white;
+}
