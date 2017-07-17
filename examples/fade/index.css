@@ -30,11 +30,16 @@ h1 {
 }
 
 .carousel-track {
-  display: flex;
+  position: relative;
   height: 100%;
 }
 
 .carousel-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   flex: 0 0 300px;
   height: 100%;
   display: flex;

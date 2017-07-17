@@ -7,12 +7,13 @@
 Micro carousel framework for React.JS https://xiaody.github.io/react-touch-carousel/docs/
 
 Yes, there are [a][slick] [few][Swiper] [carousel][Owl Carousel 2] [libraries][react-swipe] out there.
-Most of them are powerful, well tested, easy to use for common usage,
-but none of them are convenient enough for the highly customized fancy UX that your team's cool designer wants.
+Most of them are mature and easy to use for common usage,
+but none of them are convenient for the highly customized fancy UX that your team's cool designer wants.
 
 react-touch-carousel does it in a different way.
 Instead of accepting some static DOM nodes and providing a thousand options,
-it lets you decide what content inside carousel are rendered and how they are styled, totally and dynamically.
+it does an inversion of control and lets you decide
+what content inside carousel are rendered and how they are styled, totally and dynamically.
 
 ## Installation
 
@@ -51,6 +52,8 @@ function renderCard (index, modIndex, cursor) {
 />
 ```
 
+The `CarouselContainer()` and `renderCard()` are where all the magic happens,
+which shall be directed by by you.
 See some detailed [examples](https://github.com/xiaody/react-touch-carousel/tree/master/examples).
 
 ## Options

@@ -68,33 +68,3 @@ h1 {
   text-align: left;
   font-family: sans-serif;
 }
-
-.carousel-pagination-wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.carousel-pagination {
-  list-style: none;
-  display: flex;
-  justify-content: space-around;
-  width: 180px;
-  padding: 0;
-}
-
-.carousel-pagination li {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(50, 50, 50, 0.5);
-}
-
-.carousel-pagination .current {
-  border-radius: 0;
-  background: white;
-}

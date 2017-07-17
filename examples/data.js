@@ -26,7 +26,8 @@ const data = [
   {
     title: 'Card 4',
     background: '#44c1c1',
-    text: `See some example code in the '/examples' dir at GitHub. And you can run and play with the code after cloning and installing it, by
+    text: `See some example code in the '/examples' dir at GitHub. And you can run and play with the code after cloning it, by
+    - npm install
     - npm run dev
     - open localhost:5000`
   },
