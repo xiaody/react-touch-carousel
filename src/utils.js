@@ -30,3 +30,12 @@ export function getTouchPosition (e) {
 export function getTouchId (e) {
   return e.changedTouches[0].identifier
 }
+
+export function omit (obj, keys) {
+  const ret = {}
+  Object.keys(obj).forEach(k => {
+    if (keys.includes(k)) return
+    ret[k] = obj[k]
+  })
+  return ret
+}
