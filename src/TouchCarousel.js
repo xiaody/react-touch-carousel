@@ -48,7 +48,7 @@ class TouchCarousel extends React.PureComponent {
     this.autoplayTimer = null
     this.grabbing = false
     this.tracingTouchId = null
-    this.touchMoveDirection = null
+    this.isMovingCross = null
   }
 
   componentDidMount () {
@@ -66,7 +66,7 @@ class TouchCarousel extends React.PureComponent {
     this.stopAutoplay()
     this.tracingTouchId = getTouchId(e)
     this.touchMoves = [new TouchMoveRecord(e)]
-    this.touchMoveDirection = null
+    this.isMovingCross = null
     const {cardSize, clickTolerance} = this.props
     // User click a card before it's in place but near, allow the clicking.
     // Otherwise it's only a grab.
@@ -89,16 +89,21 @@ class TouchCarousel extends React.PureComponent {
     }
     this.tracingTouchId = touchId
 
-    let shouldIgnore = false
-    if (this.props.ignoreCrossMove && this.state.active && this.touchMoves.length) {
-      const {vertical} = this.props
-      const touchMoveDirection = this.touchMoveDirection = this.touchMoveDirection || (
-        Math.abs(touchMove.y - this.touchMoves[0].y) > Math.abs(touchMove.x - this.touchMoves[0].x)
-          ? 'vertical'
-          : 'horizontal'
-      )
-      shouldIgnore = (touchMoveDirection === 'vertical' && !vertical) ||
-        (touchMoveDirection === 'horizontal' && vertical)
+    let shouldIgnore = e.defaultPrevented
+    if (!shouldIgnore && this.state.active && this.touchMoves.length) {
+      if (this.isMovingCross == null) {
+        const {vertical, ignoreCrossMove} = this.props
+        let factor = ignoreCrossMove
+        if (typeof factor !== 'number') {
+          factor = factor ? 1 : 0
+        }
+        const mainAxis = vertical ? 'y' : 'x'
+        const crossAxis = vertical ? 'x' : 'y'
+        const deltMain = Math.abs(touchMove[mainAxis] - this.touchMoves[0][mainAxis])
+        const deltCross = Math.abs(touchMove[crossAxis] - this.touchMoves[0][crossAxis])
+        this.isMovingCross = deltCross * factor > deltMain
+      }
+      shouldIgnore = this.isMovingCross
     }
 
     if (shouldIgnore) {
