@@ -1,7 +1,7 @@
 import React from 'react'
 import {Motion, spring} from 'react-motion'
 import {
-  range, clamp, precision as calcPrecision,
+  range, clamp, precision as roundToPrecision,
   getTouchPosition, getTouchId, omit
 } from './utils'
 
@@ -285,8 +285,8 @@ class TouchCarousel extends React.PureComponent {
   }
 
   shouldEnableSpring = () => {
-    const {dragging, moding} = this.state
-    return !moding && !dragging
+    const {active, moding} = this.state
+    return !active && !moding
   }
 
   render () {
@@ -308,7 +308,7 @@ class TouchCarousel extends React.PureComponent {
         style={{
           cursor: this.shouldEnableSpring()
             ? spring(computedCursor, springConfig)
-            : calcPrecision(computedCursor, precision)
+            : roundToPrecision(computedCursor, precision)
         }}
         onRest={this.onSpringRest}
       >
