@@ -18,7 +18,7 @@ function log (text) {
 }
 
 function CarouselContainer (props) {
-  const {cursor, active, dragging, ...rest} = props
+  const {cursor, carouselState: {active, dragging}, ...rest} = props
   let current = -Math.round(cursor) % data.length
   while (current < 0) {
     current += data.length
@@ -85,6 +85,7 @@ class App extends Component {
         loop={enableLoop}
         autoplay={enableAutoplay ? 2e3 : false}
         renderCard={this.renderCard}
+        onRest={index => log(`rest at index ${index}`)}
       />
     )
   }

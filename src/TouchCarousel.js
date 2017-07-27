@@ -26,6 +26,7 @@ const defaultProps = {
   moveScale: 1,
   stiffness: 200,
   damping: 25,
+  onRest () {},
   maxOverflow: 0.5,
   clickTolerance: 2,
   ignoreCrossMove: true
@@ -40,6 +41,7 @@ class TouchCarousel extends React.PureComponent {
       cursor: props.defaultCursor,
       active: false,
       dragging: false,
+      springing: false,
       moding: false
     }
     this.usedCursor = 0
@@ -141,6 +143,7 @@ class TouchCarousel extends React.PureComponent {
       e.stopPropagation()
     }
 
+    let targetCursor = null
     // Due to multi-touch, records can be empty even if .dragging is true.
     // So check both.
     if (this.state.dragging && this.touchMoves.length) {
@@ -162,16 +165,30 @@ class TouchCarousel extends React.PureComponent {
         Math.floor(cursor) - cursor,
         Math.ceil(cursor) - cursor
       )
-      this.setCursor(Math.round(cursor + cursorDelta))
+      targetCursor = Math.round(cursor + cursorDelta)
       this.touchMoves = []
     } else {
       // User grabs and then releases without any move in between.
       // Snap the cursor.
-      this.setCursor(Math.round(this.state.cursor))
+      targetCursor = Math.round(this.state.cursor)
     }
-    this.setState({active: false, dragging: false})
+    this.setState({active: false, dragging: false}, () => {
+      this.setCursor(targetCursor)
+    })
     this.tracingTouchId = null
     this.autoplayIfEnabled()
+  }
+
+  onSpringRest = () => {
+    if (!this.shouldEnableSpring()) return
+    this.setState({springing: false})
+    const cursor = Math.round(this.usedCursor)
+    const index = -cursor
+    let modIndex = index % this.props.cardCount
+    while (modIndex < 0) {
+      modIndex += this.props.cardCount
+    }
+    this.props.onRest(index, modIndex, cursor, this.state)
   }
 
   autoplayIfEnabled = () => {
@@ -208,8 +225,9 @@ class TouchCarousel extends React.PureComponent {
   }
 
   setCursor = (cursor) => {
+    const springing = this.shouldEnableSpring() && cursor !== this.state.cursor
     return new Promise(resolve => {
-      this.setState({cursor}, resolve)
+      this.setState({cursor, springing}, resolve)
     })
   }
 
@@ -266,6 +284,11 @@ class TouchCarousel extends React.PureComponent {
     })
   }
 
+  shouldEnableSpring = () => {
+    const {dragging, moding} = this.state
+    return !moding && !dragging
+  }
+
   render () {
     const {
       component: Component,
@@ -275,7 +298,6 @@ class TouchCarousel extends React.PureComponent {
       loop,
       ...rest
     } = this.props
-    const {active, dragging, moding} = this.state
     const padCount = loop ? cardPadCount : 0
     const springConfig = {stiffness, damping, precision}
     const computedCursor = this.getComputedCursor()
@@ -284,10 +306,11 @@ class TouchCarousel extends React.PureComponent {
       <Motion
         defaultStyle={{cursor: computedCursor}}
         style={{
-          cursor: (dragging || moding)
-            ? calcPrecision(computedCursor, precision)
-            : spring(computedCursor, springConfig)
+          cursor: this.shouldEnableSpring()
+            ? spring(computedCursor, springConfig)
+            : calcPrecision(computedCursor, precision)
         }}
+        onRest={this.onSpringRest}
       >
         {({cursor}) => {
           this.usedCursor = cursor
@@ -295,8 +318,7 @@ class TouchCarousel extends React.PureComponent {
             <Component
               {...omit(rest, propsKeys)}
               cursor={cursor}
-              active={active}
-              dragging={dragging}
+              carouselState={this.state}
               onTouchStart={this.onTouchStart}
               onTouchMove={this.onTouchMove}
               onTouchEnd={this.onTouchEnd}
@@ -306,7 +328,7 @@ class TouchCarousel extends React.PureComponent {
                 while (modIndex < 0) {
                   modIndex += cardCount
                 }
-                return renderCard(index, modIndex, cursor)
+                return renderCard(index, modIndex, cursor, this.state)
               })}
             </Component>
           )

@@ -8,7 +8,7 @@ const cardSize = 300
 const cardPadCount = 2
 
 function CarouselContainer (props) {
-  const {cursor, active, dragging, ...rest} = props
+  const {cursor, carouselState, ...rest} = props
   return (
     <div className='carousel-container'>
       <div

@@ -60,7 +60,7 @@ class App extends Component {
   }
 
   container = (props) => {
-    const {cursor, active, dragging, ...rest} = props
+    const {cursor, carouselState, ...rest} = props
     const translateX = cursor * cardSize
     return (
       <div className='carousel-container' onTouchStart={this.modPage}>

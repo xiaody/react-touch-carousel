@@ -1,0 +1,130 @@
+html, body {
+  margin: 0;
+}
+
+.ui-center {
+  text-align: center;
+}
+
+h1 {
+  margin: 1.5em;
+  font-size: 24px;
+  text-align: center;
+}
+
+#mobile-tip {
+  text-align: center;
+}
+
+#mobile-tip:not([hidden]) ~ #react-root {
+  opacity: 0.1;
+}
+
+.carousel-container {
+  position: relative;
+  height: 300px;
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel-card {
+  flex: 0 0 300px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.carousel-card-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(#303030, #303030 1px, #222 2px, #222 3px);
+}
+
+.carousel-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  font-size: 1.5em;
+}
+
+.cd-player {
+  position: relative;
+  padding-top: 50px;
+}
+
+.cd-bar {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 80px;
+  height: 5px;
+  color: #eee;
+  border-bottom-right-radius: 3px;
+  background: currentColor;
+  transform: rotate(75deg);
+  transform-origin: left center;
+  transition: transform 350ms;
+}
+
+.cd-bar::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.cd-bar::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: 3px;
+  background: currentColor;
+  transform: translateX(47px) rotate(-30deg);
+  transform-origin: left center;
+}
+
+.playing .carousel-card-inner {
+  animation: rotate 25s linear infinite running;
+}
+
+.is-dragging .carousel-card-inner,
+.is-springing .carousel-card-inner {
+  animation-play-state: paused; /* iOS safari is buggy */
+}
+
+.is-dragging .cd-bar,
+.is-springing .cd-bar {
+  transform: rotate(40deg);
+}
+
+@keyframes rotate {
+  0% {transform: rotate(0);}
+  100% {transform: rotate(360deg);}
+}

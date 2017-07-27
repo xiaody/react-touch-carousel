@@ -9,7 +9,7 @@ const cardPadCount = 3
 const carouselWidth = clamp(window.innerWidth, 0, 960)
 
 function CarouselContainer (props) {
-  const {cursor, active, dragging, ...rest} = props
+  const {cursor, carouselState, ...rest} = props
   // Put current card at center
   const translateX = (cursor - cardPadCount) * cardSize + (carouselWidth - cardSize) / 2
   return (
