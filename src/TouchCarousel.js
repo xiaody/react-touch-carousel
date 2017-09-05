@@ -322,6 +322,7 @@ class TouchCarousel extends React.PureComponent {
               onTouchStart={this.onTouchStart}
               onTouchMove={this.onTouchMove}
               onTouchEnd={this.onTouchEnd}
+              onTouchCancel={this.onTouchEnd}
             >
               {range(0 - padCount, cardCount - 1 + padCount).map(index => {
                 let modIndex = index % cardCount
