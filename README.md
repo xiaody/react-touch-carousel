@@ -76,7 +76,7 @@ the count of your cards, not including the padded ones
 
 ### props.cardPadCount {Number}
 
-the count of paded cards, necessary for looping
+the count of padded cards, necessary for looping
 
 ### props.cardSize {Number}
 
