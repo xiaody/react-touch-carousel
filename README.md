@@ -53,7 +53,7 @@ function renderCard (index, modIndex, cursor) {
 ```
 
 The `CarouselContainer()` and `renderCard()` are where all the magic happens,
-which shall be directed by by you.
+which shall be directed by you.
 See some detailed [examples](https://github.com/xiaody/react-touch-carousel/tree/master/examples).
 
 ## Options
@@ -73,6 +73,10 @@ all rendered cards joined as an array will be passed to props.component as it's 
 ### props.cardCount {Number}
 
 the count of your cards, not including the padded ones
+
+### props.cardPadCount {Number}
+
+the count of paded cards, necessary for looping
 
 ### props.cardSize {Number}
 
@@ -95,6 +99,10 @@ interval in milliseconds, 0 as disabled
 the cursor value for initial render
 
 notice the sign of the number, normally it should be negative or zero(default)
+
+### props.onRest {Function}
+
+callback when the carousel is rested at a card
 
 ## Advanced options
 
