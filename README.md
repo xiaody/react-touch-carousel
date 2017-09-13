@@ -60,69 +60,79 @@ See some detailed [examples](https://github.com/xiaody/react-touch-carousel/tree
 
 ### props.component {Component}
 
-your container component of the carousel
+Your container component of the carousel.
 
-react-touch-carousel will pass it's touch listeners, dragging/active state, current position cursor to this component
+react-touch-carousel will pass it's touch listeners, dragging/active state, current position cursor to this component.
 
 ### props.renderCard(index, modIndex, cursor) {Function}
 
-the card renderer
+The card renderer.
 
-all rendered cards joined as an array will be passed to props.component as it's `children`
+All rendered cards joined as an array will be passed to props.component as it's `children`.
 
 ### props.cardCount {Number}
 
-the count of your cards, not including the padded ones
+The count of your cards, not including the padded ones.
 
 ### props.cardPadCount {Number}
 
-the count of padded cards, necessary for looping
+The count of padded cards, necessary for looping.
+
+Ignored if `loop` is `false`.
 
 ### props.cardSize {Number}
 
-the width (or height if vertical is true) in pixels of a card
+The width (or height if `vertical` is `true`) in pixels of a card.
 
 ### props.vertical {Boolean}
 
-listen to vertical touch moves instead of horizontal ones
+Listen to vertical touch moves instead of horizontal ones.
 
 ### props.loop {Boolean}
 
-tail to head, head to tail
+Tail to head, head to tail.
 
 ### props.autoplay {Number}
 
-interval in milliseconds, 0 as disabled
+Interval in milliseconds, 0 as disabled.
 
 ### props.defaultCursor {Number}
 
-the cursor value for initial render
+The cursor value for initial render.
 
-notice the sign of the number, normally it should be negative or zero(default)
+Notice the sign of the number, normally it should be negative or zero(default).
 
 ### props.onRest {Function}
 
-callback when the carousel is rested at a card
+Callback when the carousel is rested at a card.
 
 ### props.ignoreCrossMove {Number|Boolean}
 
-if `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the dragging. `true` as `1` and `false` as `0`
+If `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the dragging.
+
+`true` as `1` and `false` as `0`.
 
 ## Advanced options
 
 There are some advanced options, but normally you don't need to touch them.
 
-So I don't write their docs for now.
-
 ## Methods
 
-You know that React allows you to get the ref of a component.
+### go(targetCursor)
 
-This component expose some methods like `go()`, `next()`, `prev()`,
-but normally you don't need them I guess.
+Transition to a position.
 
-So I don't write their docs for now.
+### next()
 
+Transition to next card.
+
+### prev()
+
+Transition to previous card.
+
+### modeAs(targetCursor)
+
+Hard jump to a position.
 
 [slick]: https://kenwheeler.github.io/slick/
 [Swiper]: http://idangero.us/swiper/
