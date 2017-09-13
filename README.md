@@ -104,6 +104,10 @@ notice the sign of the number, normally it should be negative or zero(default)
 
 callback when the carousel is rested at a card
 
+### props.ignoreCrossMove {Number|Boolean}
+
+if `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the dragging. `true` as `1` and `false` as `0`
+
 ## Advanced options
 
 There are some advanced options, but normally you don't need to touch them.
