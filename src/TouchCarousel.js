@@ -254,7 +254,7 @@ class TouchCarousel extends React.PureComponent {
     return this.usedCursor
   }
 
-  modeAs = (cursor) => {
+  modAs = (cursor) => {
     return new Promise(resolve => {
       this.setState({moding: true, cursor}, () => {
         this.setState({moding: false}, resolve)
@@ -277,7 +277,7 @@ class TouchCarousel extends React.PureComponent {
         newCursor += cardCount
       }
       if (newCursor !== cursor) {
-        this.modeAs(newCursor).then(resolve)
+        this.modAs(newCursor).then(resolve)
       } else {
         resolve()
       }

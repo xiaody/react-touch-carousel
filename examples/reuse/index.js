@@ -55,7 +55,7 @@ class App extends Component {
         renderedData: this.getRenderedData(newPage)
       })
       // This kinda breaks grabbing. But not a big deal I guess.
-      this.carousel.modeAs(newCursor)
+      this.carousel.modAs(newCursor)
     }
   }
 

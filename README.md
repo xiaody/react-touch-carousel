@@ -155,7 +155,7 @@ It contains:
 }
 ```
 
-### Mode
+### Mod
 
 This happens if you enable `loop`. We keep the cursor in a valid range by "moding" it.
 
@@ -177,7 +177,7 @@ Transition to next card.
 
 Transition to previous card.
 
-### modeAs(targetCursor)
+### modAs(targetCursor)
 
 Hard jump to a position.
 
