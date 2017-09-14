@@ -97,15 +97,15 @@ The width (or height if `vertical` is `true`) in pixels of a card.
 
 ### props.vertical {Boolean}
 
-Listen to vertical touch moves instead of horizontal ones.
+Listen to vertical touch moves instead of horizontal ones. Default `false`.
 
 ### props.loop {Boolean}
 
-Tail to head, head to tail.
+Tail to head, head to tail. Default `true`.
 
 ### props.autoplay {Number}
 
-Interval in milliseconds, 0 as disabled.
+Interval in milliseconds, 0 as disabled. Default `0`.
 
 ### props.defaultCursor {Number}
 
@@ -113,7 +113,7 @@ The cursor value for initial render.
 
 Notice the sign of the number, normally it should be negative or zero(default).
 
-### props.onRest {Function}
+### props.onRest(index, modIndex, cursor, carouselState) {Function}
 
 Callback when the carousel is rested at a card.
 
@@ -121,7 +121,7 @@ Callback when the carousel is rested at a card.
 
 If `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the dragging.
 
-`true` as `1` and `false` as `0`.
+`true` as `1` and `false` as `0`. Default `true`.
 
 ## Concepts
 
@@ -153,7 +153,7 @@ It contains:
 
 ### Mode
 
-This happens if you enable `loop`. We keep the cursor in valid range by "moding".
+This happens if you enable `loop`. We keep the cursor in a valid range by "moding" it.
 
 ## Advanced options
 
