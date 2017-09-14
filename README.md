@@ -64,6 +64,8 @@ Your container component of the carousel.
 
 react-touch-carousel will pass it's touch listeners, dragging/active state, current position cursor to this component.
 
+It is actually called like this:
+
 ```jsx
 <Component
   cursor={usedCursor}
@@ -72,7 +74,9 @@ react-touch-carousel will pass it's touch listeners, dragging/active state, curr
   onTouchMove={onTouchMove}
   onTouchEnd={onTouchEnd}
   onTouchCancel={onTouchCancel}
-/>
+>
+  {allYourRenderedCards}
+</Component>
 ```
 
 ### props.renderCard(index, modIndex, cursor, carouselState) {Function}
