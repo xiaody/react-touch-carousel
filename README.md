@@ -64,7 +64,18 @@ Your container component of the carousel.
 
 react-touch-carousel will pass it's touch listeners, dragging/active state, current position cursor to this component.
 
-### props.renderCard(index, modIndex, cursor) {Function}
+```jsx
+<Component
+  cursor={usedCursor}
+  carouselState={carouselState}
+  onTouchStart={onTouchStart}
+  onTouchMove={onTouchMove}
+  onTouchEnd={onTouchEnd}
+  onTouchCancel={onTouchCancel}
+/>
+```
+
+### props.renderCard(index, modIndex, cursor, carouselState) {Function}
 
 The card renderer.
 
@@ -111,6 +122,38 @@ Callback when the carousel is rested at a card.
 If `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the dragging.
 
 `true` as `1` and `false` as `0`.
+
+## Concepts
+
+### Cursor
+
+A cursor indicates the transition position of the carousel.
+
+When the user swipes right, the number gets bigger. When the user swipes left, the number get smaller.
+
+There are three steps to calculating the cursor's final value:
+specified, computed, used.
+
+In most cases you just use the used cursor value to render your carousel content.
+
+### CarouselState
+
+A carouselState is always passed to your `component` and `renderCard`.
+
+It contains:
+```js
+{
+  cursor, // the specified cursor
+  active, // is user interacting with the component, no matter dragging or pressing or clicking?
+  dragging, // is user dragging the component?
+  springing, // has user dragged and released the component, and the component is transitioning to the specified cursor?
+  moding // is the cursor moding?
+}
+```
+
+### Mode
+
+This happens if you enable `loop`. We keep the cursor in valid range by "moding".
 
 ## Advanced options
 
