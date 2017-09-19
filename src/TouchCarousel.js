@@ -27,6 +27,9 @@ const defaultProps = {
   stiffness: 200,
   damping: 25,
   onRest () {},
+  onDragStart () {},
+  onDragEnd () {},
+  onDragCancel () {},
   maxOverflow: 0.5,
   clickTolerance: 2,
   ignoreCrossMove: true
@@ -117,11 +120,11 @@ class TouchCarousel extends React.PureComponent {
     // please use CSS `touch-action` for it.
     e.preventDefault()
 
-    const {cardSize, moveScale, vertical} = this.props
+    const {cardSize, moveScale, vertical, onDragStart} = this.props
     const lastMove = this.touchMoves[this.touchMoves.length - 1]
     const xy = vertical ? 'y' : 'x'
     const distance = touchMove[xy] - lastMove[xy]
-    this.setState({dragging: true})
+    this.setState({dragging: true}, this.state.dragging ? undefined : onDragStart)
     this.setCursor(this.state.cursor + distance / cardSize * moveScale, true)
 
     this.touchMoves.push(touchMove)
@@ -130,7 +133,8 @@ class TouchCarousel extends React.PureComponent {
     }
   }
 
-  onTouchEnd = (e) => {
+  onTouchEndOrCancel = (e) => {
+    const {type} = e
     this.touchCount -= e.changedTouches.length
     if (this.touchCount > 0) {
       this.touchMoves = []
@@ -143,10 +147,11 @@ class TouchCarousel extends React.PureComponent {
       e.stopPropagation()
     }
 
+    const wasDragging = this.state.dragging
     let targetCursor = null
     // Due to multi-touch, records can be empty even if .dragging is true.
     // So check both.
-    if (this.state.dragging && this.touchMoves.length) {
+    if (wasDragging && this.touchMoves.length) {
       const {cardSize, moveScale, vertical} = this.props
       const damping = this.props.damping / 1e6
       const {touchMoves} = this
@@ -174,6 +179,9 @@ class TouchCarousel extends React.PureComponent {
     }
     this.setState({active: false, dragging: false}, () => {
       this.setCursor(targetCursor)
+      if (wasDragging) {
+        this.props[type === 'touchend' ? 'onDragEnd' : 'onDragCancel']()
+      }
     })
     this.tracingTouchId = null
     this.autoplayIfEnabled()
@@ -321,8 +329,8 @@ class TouchCarousel extends React.PureComponent {
               carouselState={this.state}
               onTouchStart={this.onTouchStart}
               onTouchMove={this.onTouchMove}
-              onTouchEnd={this.onTouchEnd}
-              onTouchCancel={this.onTouchEnd}
+              onTouchEnd={this.onTouchEndOrCancel}
+              onTouchCancel={this.onTouchEndOrCancel}
             >
               {range(0 - padCount, cardCount - 1 + padCount).map(index => {
                 let modIndex = index % cardCount

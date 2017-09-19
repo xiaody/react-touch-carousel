@@ -86,6 +86,9 @@ class App extends Component {
         autoplay={enableAutoplay ? 2e3 : false}
         renderCard={this.renderCard}
         onRest={index => log(`rest at index ${index}`)}
+        onDragStart={() => log('dragStart')}
+        onDragEnd={() => log('dragEnd')}
+        onDragCancel={() => log('dragCancel')}
       />
     )
   }
