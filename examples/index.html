@@ -48,7 +48,8 @@
     <main>
       <h1>react-touch-carousel</h1>
       <p>Micro carousel framework for React.JS</p>
-      <p>See some demos below</p>
+      <p>See some demos below<span hidden data-mobile-tip> on a mobile device</span></p>
+      <image hidden data-mobile-tip src="./docs-qrcode.png" alt="Scan qrcode to open this page on phones">
       <ul class="page-list">
         <li><a class="entry-link" href="boring.html">boring</a></li>
         <li><a class="entry-link" href="boring.html?loop&autoplay">loop & autoplay</a></li>
@@ -66,5 +67,12 @@
         </a>
       </p>
     </main>
+    <script>
+    if (!/mobile|android/i.test(navigator.userAgent)) {
+      for (const elt of document.querySelectorAll('[data-mobile-tip]')) {
+        elt.removeAttribute('hidden')
+      }
+    }
+    </script>
   </body>
 </html>
