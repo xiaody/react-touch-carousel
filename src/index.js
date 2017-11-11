@@ -3,7 +3,9 @@ export {
   range,
   clamp,
   precision,
-  getTouchPosition
+  getTouchPosition,
+  getTouchId,
+  omit
 } from './utils'
 
 export default TouchCarousel

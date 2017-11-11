@@ -1,5 +1,6 @@
 import React from 'react'
-import {Motion, spring} from 'react-motion'
+import Motion from 'react-motion/lib/Motion'
+import spring from 'react-motion/lib/spring'
 import {
   range, clamp, precision as roundToPrecision,
   getTouchPosition, getTouchId, omit
@@ -125,7 +126,7 @@ class TouchCarousel extends React.PureComponent {
     const xy = vertical ? 'y' : 'x'
     const distance = touchMove[xy] - lastMove[xy]
     this.setState({dragging: true}, this.state.dragging ? undefined : onDragStart)
-    this.setCursor(this.state.cursor + distance / cardSize * moveScale, true)
+    this.setCursor(this.state.cursor + distance / cardSize * moveScale)
 
     this.touchMoves.push(touchMove)
     if (this.touchMoves.length > 250) {
