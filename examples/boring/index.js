@@ -85,6 +85,7 @@ class App extends Component {
         loop={enableLoop}
         autoplay={enableAutoplay ? 2e3 : false}
         renderCard={this.renderCard}
+        mouseSupport
         onRest={index => log(`rest at index ${index}`)}
         onDragStart={() => log('dragStart')}
         onDragEnd={() => log('dragEnd')}
@@ -97,9 +98,6 @@ class App extends Component {
 document.addEventListener('DOMContentLoaded', function () {
   const ndRoot = document.getElementById('react-root')
   render(<App />, ndRoot)
-  if (!('ontouchmove' in window)) {
-    document.getElementById('mobile-tip').removeAttribute('hidden')
-  }
 
   let optionExplain = []
   if (enableLoop) {

@@ -131,6 +131,10 @@ If `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the d
 
 `true` as `1` and `false` as `0`. Default `true`.
 
+### props.mouseSupport {Boolean}
+
+If this is set to `true`, desktop users can drag the carousel using the mouse.
+
 ## Concepts
 
 ### Cursor

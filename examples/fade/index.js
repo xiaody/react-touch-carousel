@@ -53,7 +53,8 @@ class App extends Component {
         autoplay={2e3}
         renderCard={this.renderCard}
         stiffness={100}
-      />
+        mouseSupport
+        />
     )
   }
 }
@@ -61,7 +62,4 @@ class App extends Component {
 document.addEventListener('DOMContentLoaded', function () {
   const ndRoot = document.getElementById('react-root')
   render(<App />, ndRoot)
-  if (!('ontouchmove' in window)) {
-    document.getElementById('mobile-tip').removeAttribute('hidden')
-  }
 })
