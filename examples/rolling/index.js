@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {render} from 'react-dom'
 import data from '../data'
 import TouchCarousel, {clamp} from '../../src'
+import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
 
 const cardSize = 300
@@ -22,6 +23,8 @@ function CarouselContainer (props) {
     </div>
   )
 }
+
+const Container = touchWithMouseHOC(CarouselContainer)
 
 class App extends Component {
   renderCard (index, modIndex, cursor) {
@@ -48,7 +51,7 @@ class App extends Component {
   render () {
     return (
       <TouchCarousel
-        component={CarouselContainer}
+        component={Container}
         cardSize={cardSize}
         cardCount={data.length}
         cardPadCount={cardPadCount}

@@ -33,18 +33,10 @@ const defaultProps = {
   onDragCancel () {},
   maxOverflow: 0.5,
   clickTolerance: 2,
-  ignoreCrossMove: true,
-  mouseSupport: false
+  ignoreCrossMove: true
 }
 
 const propsKeys = Object.keys(defaultProps)
-
-const mockEventTypes = {
-  'mousedown': 'touchstart',
-  'mousemove': 'touchmove',
-  'mouseup': 'touchend',
-  'blur': 'touchcancel'
-}
 
 class TouchCarousel extends React.PureComponent {
   constructor (props) {
@@ -63,57 +55,14 @@ class TouchCarousel extends React.PureComponent {
     this.grabbing = false
     this.tracingTouchId = null
     this.isMovingCross = null
-    this.isMouseDown = false
-    this.mouseTouchId = 0
   }
 
   componentDidMount () {
-    if (this.props.mouseSupport) {
-      this.addMouseListeners()
-    }
     this.autoplayIfEnabled()
   }
 
   componentWillUnmount () {
-    if (this.props.mouseSupport) {
-      this.removeMouseListeners()
-    }
     this.stopAutoplay()
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!this.props.mouseSupport && nextProps.mouseSupport) {
-      this.addMouseListeners()
-    }
-    if (this.props.mouseSupport && !nextProps.mouseSupport) {
-      this.removeMouseListeners()
-    }
-  }
-
-  addMouseListeners () {
-    document.addEventListener('mousemove', this.onDocumentMouseMove)
-    document.addEventListener('mouseup', this.onDocumentMouseUp)
-    window.addEventListener('blur', this.onDocumentMouseUp)
-  }
-
-  removeMouseListeners () {
-    document.removeEventListener('mousemove', this.onDocumentMouseMove)
-    document.removeEventListener('mouseup', this.onDocumentMouseUp)
-    window.removeEventListener('blur', this.onDocumentMouseUp)
-  }
-
-  mockTouchEvent = (e) => ({
-    changedTouches: [{ identifier: this.mouseTouchId, pageX: e.pageX, pageY: e.pageY }],
-    type: mockEventTypes[e.type] || e.type,
-    // copy functions from prototype
-    preventDefault: e.preventDefault.bind(e),
-    stopPropagation: e.stopPropagation.bind(e)
-  })
-
-  onMouseDown = (e) => {
-    this.isMouseDown = true
-    this.mouseTouchId++
-    this.onTouchStart(this.mockTouchEvent(e))
   }
 
   onTouchStart = (e) => {
@@ -137,18 +86,10 @@ class TouchCarousel extends React.PureComponent {
     }
   }
 
-  onDocumentMouseMove = (e) => {
-    if (!this.isMouseDown) {
-      return
-    }
-    this.onTouchMove(this.mockTouchEvent(e))
-  }
-
   onTouchMove = (e) => {
     this.grabbing = false
     const touchMove = new TouchMoveRecord(e)
     const touchId = getTouchId(e)
-
     if (touchId !== this.tracingTouchId) {
       this.touchMoves = [touchMove]
     }
@@ -193,14 +134,6 @@ class TouchCarousel extends React.PureComponent {
     }
   }
 
-  onDocumentMouseUp = (e) => {
-    if (!this.isMouseDown) {
-      return
-    }
-    this.isMouseDown = false
-    this.onTouchEndOrCancel(this.mockTouchEvent(e))
-  }
-
   onTouchEndOrCancel = (e) => {
     const {type} = e
     this.touchCount -= e.changedTouches.length
@@ -219,7 +152,7 @@ class TouchCarousel extends React.PureComponent {
     let targetCursor = null
     // Due to multi-touch, records can be empty even if .dragging is true.
     // So check both.
-    if (wasDragging && this.touchMoves.length && e.changedTouches[0].pageX !== undefined) {
+    if (wasDragging && this.touchMoves.length) {
       const {cardSize, moveScale, vertical} = this.props
       const damping = this.props.damping / 1e6
       const {touchMoves} = this
@@ -396,7 +329,6 @@ class TouchCarousel extends React.PureComponent {
               cursor={cursor}
               carouselState={this.state}
               onTouchStart={this.onTouchStart}
-              onMouseDown={this.props.mouseSupport ? this.onMouseDown : undefined}
               onTouchMove={this.onTouchMove}
               onTouchEnd={this.onTouchEndOrCancel}
               onTouchCancel={this.onTouchEndOrCancel}

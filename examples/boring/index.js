@@ -3,6 +3,7 @@ import {render} from 'react-dom'
 import cx from 'classnames'
 import data from '../data'
 import TouchCarousel, {clamp} from '../../src'
+import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
 
 const query = window.location.search.slice(1)
@@ -55,6 +56,8 @@ function CarouselContainer (props) {
   )
 }
 
+const Container = touchWithMouseHOC(CarouselContainer)
+
 class App extends Component {
   renderCard (index, modIndex) {
     const item = data[modIndex]
@@ -78,14 +81,13 @@ class App extends Component {
   render () {
     return (
       <TouchCarousel
-        component={CarouselContainer}
+        component={Container}
         cardSize={cardSize}
         cardCount={data.length}
         cardPadCount={cardPadCount}
         loop={enableLoop}
         autoplay={enableAutoplay ? 2e3 : false}
         renderCard={this.renderCard}
-        mouseSupport
         onRest={index => log(`rest at index ${index}`)}
         onDragStart={() => log('dragStart')}
         onDragEnd={() => log('dragEnd')}
