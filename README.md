@@ -131,10 +131,6 @@ If `deltCrossAxis * ignoreCrossMove > deltMainAxis`, carousel would ignore the d
 
 `true` as `1` and `false` as `0`. Default `true`.
 
-### props.mouseSupport {Boolean}
-
-If this is set to `true`, desktop users can drag the carousel using the mouse.
-
 ## Concepts
 
 ### Cursor
@@ -191,7 +187,7 @@ Hard jump to a position.
 
 ## Mouse support
 
-We provide a HOC for basic mouse support. Internally it simulates touch events with the mouse events.
+We provide an HOC for basic mouse support. Internally it simulates touch events with the mouse events.
 
 ```jsx
 import touchWithMouseHOC from 'react-touch-carousel/lib/touchWithMouseHOC'
