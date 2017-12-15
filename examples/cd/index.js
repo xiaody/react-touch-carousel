@@ -74,6 +74,7 @@ class App extends Component {
         renderCard={this.renderCard}
         onRest={this.onRest}
         data-playing={this.state.playing}
+        mouseSupport
       />
     )
   }
@@ -82,9 +83,6 @@ class App extends Component {
 document.addEventListener('DOMContentLoaded', function () {
   const ndRoot = document.getElementById('react-root')
   render(<App />, ndRoot)
-  if (!('ontouchmove' in window)) {
-    document.getElementById('mobile-tip').removeAttribute('hidden')
-  }
 
   if (/iPhone|iPad/.test(navigator.userAgent)) {
     document.getElementById('iOS-bug').removeAttribute('hidden')

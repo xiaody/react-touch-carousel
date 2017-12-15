@@ -12,14 +12,6 @@ h1 {
   text-align: center;
 }
 
-#mobile-tip {
-  text-align: center;
-}
-
-#mobile-tip:not([hidden]) ~ #react-root {
-  opacity: 0.1;
-}
-
 .carousel-container {
   position: relative;
   height: 300px;
