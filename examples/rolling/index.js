@@ -57,7 +57,6 @@ class App extends Component {
         cardPadCount={cardPadCount}
         autoplay={2e3}
         renderCard={this.renderCard}
-        mouseSupport
         />
     )
   }

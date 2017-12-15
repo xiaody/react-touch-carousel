@@ -77,7 +77,6 @@ class App extends Component {
         renderCard={this.renderCard}
         onRest={this.onRest}
         data-playing={this.state.playing}
-        mouseSupport
       />
     )
   }
