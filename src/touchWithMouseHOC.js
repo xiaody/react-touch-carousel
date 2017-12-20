@@ -11,24 +11,34 @@ const mockEventTypes = {
   blur: 'touchcancel'
 }
 
-export default function touchWithMouseHOC (Component) {
+const distance = (x1, y1, x2, y2) =>
+  Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+
+export default function touchWithMouseHOC (Component, options = {}) {
+  const clickTolerance = options.clickTolerance || 5
+
   class TouchWithMouse extends React.Component {
     constructor (props) {
       super(props)
       this.isMouseDown = false
       this.mouseDownId = 0
       this.lastMoveEvent = null
+      this.clickStartX = null
+      this.clickStartY = null
     }
 
     componentDidMount () {
       document.addEventListener('mousemove', this.onDocumentMouseMove)
       document.addEventListener('mouseup', this.onDocumentMouseUp)
+      // Listen in the capture phase, so we can prevent the clicks
+      document.addEventListener('click', this.onDocumentClick, true)
       window.addEventListener('blur', this.onWindowBlur)
     }
 
     componentWillUnmount () {
       document.removeEventListener('mousemove', this.onDocumentMouseMove)
       document.removeEventListener('mouseup', this.onDocumentMouseUp)
+      document.removeEventListener('click', this.onDocumentClick, true)
       window.removeEventListener('blur', this.onWindowBlur)
     }
 
@@ -45,6 +55,8 @@ export default function touchWithMouseHOC (Component) {
       this.props.onMouseDown(e)
       this.isMouseDown = true
       this.mouseDownId++
+      this.clickStartX = e.pageX
+      this.clickStartY = e.pageY
       this.props.onTouchStart(this.mockTouchEvent(e))
     }
 
@@ -62,6 +74,11 @@ export default function touchWithMouseHOC (Component) {
       }
       this.isMouseDown = false
       this.props.onTouchEnd(this.mockTouchEvent(e))
+      // This waits for the click event, so we know to prevent it
+      setTimeout(() => {
+        this.clickStartX = null
+        this.clickStartY = null
+      }, 0)
     }
 
     onWindowBlur = (e) => {
@@ -69,6 +86,8 @@ export default function touchWithMouseHOC (Component) {
         return
       }
       this.isMouseDown = false
+      this.clickStartX = null
+      this.clickStartY = null
       const mockTouchCancelEvent = this.mockTouchEvent(
         e,
         {
@@ -76,6 +95,15 @@ export default function touchWithMouseHOC (Component) {
         }
       )
       this.props.onTouchCancel(mockTouchCancelEvent)
+    }
+
+    onDocumentClick = (e) => {
+      if (this.clickStartX !== null && this.clickStartY !== null && distance(this.clickStartX, this.clickStartY, e.pageX, e.pageY) > clickTolerance) {
+        this.clickStartX = null
+        this.clickStartY = null
+        e.preventDefault()
+        e.stopPropagation()
+      }
     }
 
     render () {
