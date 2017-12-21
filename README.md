@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/xiaody/react-touch-carousel.svg?branch=master)](https://travis-ci.org/xiaody/react-touch-carousel)
 [![npm version](https://badge.fury.io/js/react-touch-carousel.svg)](https://www.npmjs.com/package/react-touch-carousel)
 [![dependencies Status](https://david-dm.org/xiaody/react-touch-carousel/status.svg)](https://david-dm.org/xiaody/react-touch-carousel)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://standardjs.com/)
