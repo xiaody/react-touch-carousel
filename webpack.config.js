@@ -32,6 +32,12 @@ const config = {
       },
       {
         test: /\.js$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        loader: 'standard-loader'
+      },
+      {
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       },
