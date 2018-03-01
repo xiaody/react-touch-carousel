@@ -213,23 +213,31 @@ class TouchCarousel extends React.PureComponent {
     }
   }
 
+  resetAutoplayTimer = () => {
+    this.stopAutoplay()
+    this.autoplayIfEnabled()
+  }
+
   go = (n) => {
     return this.modCursor().then(() => {
       // n must be in range here.
       // That's why next()/prev() don't use this method.
       this.setCursor(n)
+      this.resetAutoplayTimer()
     })
   }
 
   next = () => {
     return this.modCursor().then(() => {
       this.setCursor(this.state.cursor - 1)
+      this.resetAutoplayTimer()
     })
   }
 
   prev = () => {
     return this.modCursor().then(() => {
       this.setCursor(this.state.cursor + 1)
+      this.resetAutoplayTimer()
     })
   }
 
