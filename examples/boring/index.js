@@ -101,7 +101,7 @@ class App extends Component {
         onDragStart={() => log('dragStart')}
         onDragEnd={() => log('dragEnd')}
         onDragCancel={() => log('dragCancel')}
-        ref={r => this.carouselRef = r}
+        ref={r => { this.carouselRef = r }}
       />
     </div>)
   }
