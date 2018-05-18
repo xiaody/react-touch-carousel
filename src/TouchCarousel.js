@@ -202,6 +202,9 @@ class TouchCarousel extends React.PureComponent {
 
   autoplayIfEnabled = () => {
     if (this.props.autoplay) {
+      if (this.autoplayTimer) {
+        clearInterval(this.autoplayTimer)
+      }
       this.autoplayTimer = setInterval(this.next, this.props.autoplay)
     }
   }
