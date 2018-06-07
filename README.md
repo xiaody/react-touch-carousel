@@ -188,7 +188,7 @@ Hard jump to a position.
 
 ## Mouse support
 
-We provide an HOC for basic mouse support. Internally it simulates touch events with the mouse events.
+We provide an HOC for very basic mouse support. Internally it simulates touch events with the mouse events.
 
 ```jsx
 import touchWithMouseHOC from 'react-touch-carousel/lib/touchWithMouseHOC'

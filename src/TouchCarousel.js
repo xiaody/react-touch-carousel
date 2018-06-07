@@ -3,7 +3,7 @@ import Motion from 'react-motion/lib/Motion'
 import spring from 'react-motion/lib/spring'
 import {
   range, clamp, precision as roundToPrecision,
-  getTouchPosition, getTouchId, omit
+  getTouchPosition, getTouchId, omit, modCursor
 } from './utils'
 
 function TouchMoveRecord (e) {
@@ -278,13 +278,7 @@ class TouchCarousel extends React.PureComponent {
         return resolve()
       }
       const {cursor} = this.state
-      let newCursor = cursor
-      while (newCursor > 0) {
-        newCursor -= cardCount
-      }
-      while (newCursor < 1 - cardCount) {
-        newCursor += cardCount
-      }
+      const newCursor = modCursor(cursor, cardCount)
       if (newCursor !== cursor) {
         this.modAs(newCursor).then(resolve)
       } else {

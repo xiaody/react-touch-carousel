@@ -104,7 +104,7 @@ class App extends Component {
         loop={false}
         renderCard={this.renderCard}
         defaultCursor={this.defaultCursor}
-        />
+      />
     )
   }
 }

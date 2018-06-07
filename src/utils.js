@@ -39,3 +39,14 @@ export function omit (obj, keys) {
   })
   return ret
 }
+
+export function modCursor (cursor, cardCount) {
+  let newCursor = cursor
+  while (newCursor > 0) {
+    newCursor -= cardCount
+  }
+  while (newCursor < 0.5 - cardCount) {
+    newCursor += cardCount
+  }
+  return newCursor
+}

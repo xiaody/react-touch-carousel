@@ -56,7 +56,7 @@ class App extends Component {
         autoplay={2e3}
         renderCard={this.renderCard}
         stiffness={100}
-        />
+      />
     )
   }
 }

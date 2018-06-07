@@ -71,7 +71,7 @@ class App extends Component {
         cardPadCount={cardPadCount}
         autoplay={3e3}
         renderCard={this.renderCard}
-        />
+      />
     )
   }
 }

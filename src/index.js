@@ -5,7 +5,8 @@ export {
   precision,
   getTouchPosition,
   getTouchId,
-  omit
+  omit,
+  modCursor
 } from './utils'
 
 export default TouchCarousel
