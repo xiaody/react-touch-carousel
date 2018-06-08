@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 import data from '../data'
+import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
 import TouchCarousel, {clamp} from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
@@ -11,9 +12,9 @@ const cardPadCount = 2
 function CarouselContainer (props) {
   const {cursor, carouselState, ...rest} = props
   return (
-    <div className='carousel-container'>
-      <div className='carousel-track' {...rest} />
-    </div>
+    <NonPassiveTouchTarget className='carousel-container'>
+      <NonPassiveTouchTarget className='carousel-track' {...rest} />
+    </NonPassiveTouchTarget>
   )
 }
 

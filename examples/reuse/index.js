@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
+import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
 import TouchCarousel, {clamp, range} from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
@@ -64,17 +65,17 @@ class App extends Component {
     const {cursor, carouselState, ...rest} = props
     const translateX = cursor * cardSize
     return (
-      <div
+      <NonPassiveTouchTarget
         className='carousel-container'
         onTouchStart={this.modPage}
         onMouseDown={this.modPage}
       >
-        <div
+        <NonPassiveTouchTarget
           className='carousel-track'
           style={{transform: `translate3d(${translateX}px, 0, 0)`}}
           {...rest}
         />
-      </div>
+      </NonPassiveTouchTarget>
     )
   })
 

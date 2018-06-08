@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 import data from '../data'
+import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
 import TouchCarousel, {clamp} from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
@@ -14,13 +15,13 @@ function CarouselContainer (props) {
   // Put current card at center
   const translateX = (cursor - cardPadCount) * cardSize + (carouselWidth - cardSize) / 2
   return (
-    <div className='carousel-container'>
-      <div
+    <NonPassiveTouchTarget className='carousel-container'>
+      <NonPassiveTouchTarget
         className='carousel-track'
         style={{transform: `translate3d(${translateX}px, 0, 0)`}}
         {...rest}
       />
-    </div>
+    </NonPassiveTouchTarget>
   )
 }
 

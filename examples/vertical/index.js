@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 import data from '../data'
+import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
 import TouchCarousel from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
 import './index.css'
@@ -12,13 +13,13 @@ function CarouselContainer (props) {
   const {cursor, carouselState, ...rest} = props
   const translateY = (cursor - cardPadCount) * cardSize
   return (
-    <div className='carousel-container'>
-      <div
+    <NonPassiveTouchTarget className='carousel-container'>
+      <NonPassiveTouchTarget
         className='carousel-track'
         style={{transform: `translate3d(0, ${translateY}px, 0)`}}
         {...rest}
       />
-    </div>
+    </NonPassiveTouchTarget>
   )
 }
 
