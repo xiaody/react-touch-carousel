@@ -90,13 +90,13 @@ class TouchCarousel extends React.PureComponent {
     this.grabbing = false
     const touchMove = new TouchMoveRecord(e)
     const touchId = getTouchId(e)
-    if (touchId !== this.tracingTouchId) {
+    if (touchId !== this.tracingTouchId || !this.touchMoves.length) {
       this.touchMoves = [touchMove]
     }
     this.tracingTouchId = touchId
 
     let shouldIgnore = e.defaultPrevented
-    if (!shouldIgnore && this.state.active && this.touchMoves.length) {
+    if (!shouldIgnore && this.state.active) {
       if (this.isMovingCross == null) {
         const {vertical, ignoreCrossMove} = this.props
         let factor = ignoreCrossMove
