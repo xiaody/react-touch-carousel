@@ -1,5 +1,11 @@
 import test from 'ava'
-import {modCursor} from './utils'
+import {omit, modCursor} from './utils'
+
+test('omit', t => {
+  t.deepEqual(omit({a: 'a', b: 'b'}, ['b']), {a: 'a'})
+  t.deepEqual(omit({a: 'a', b: 'b'}, ['c']), {a: 'a', b: 'b'})
+  t.deepEqual(omit({a: 'a', b: 'b'}, ['a', 'b']), {})
+})
 
 test('modCursor', t => {
   t.is(modCursor(0.9, 7), -6.1)
