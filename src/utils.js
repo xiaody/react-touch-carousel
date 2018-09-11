@@ -34,7 +34,7 @@ export function getTouchId (e) {
 export function omit (obj, keys) {
   const ret = {}
   Object.keys(obj).forEach(k => {
-    if (keys.includes(k)) return
+    if (keys.indexOf(k) !== -1) return
     ret[k] = obj[k]
   })
   return ret
