@@ -68,17 +68,19 @@ class App extends Component {
 
   render () {
     return (
-      <TouchCarousel
-        component={Container}
-        cardSize={cardSize}
-        cardCount={data.length}
-        cardPadCount={cardPadCount}
-        loop
-        autoplay={5e3}
-        renderCard={this.renderCard}
-        onRest={this.onRest}
-        data-playing={this.state.playing}
-      />
+      <React.StrictMode>
+        <TouchCarousel
+          component={Container}
+          cardSize={cardSize}
+          cardCount={data.length}
+          cardPadCount={cardPadCount}
+          loop
+          autoplay={5e3}
+          renderCard={this.renderCard}
+          onRest={this.onRest}
+          data-playing={this.state.playing}
+        />
+      </React.StrictMode>
     )
   }
 }

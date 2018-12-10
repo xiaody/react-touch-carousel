@@ -65,14 +65,16 @@ class App extends Component {
 
   render () {
     return (
-      <TouchCarousel
-        component={Container}
-        cardSize={cardSize}
-        cardCount={data.length}
-        cardPadCount={cardPadCount}
-        autoplay={3e3}
-        renderCard={this.renderCard}
-      />
+      <React.StrictMode>
+        <TouchCarousel
+          component={Container}
+          cardSize={cardSize}
+          cardCount={data.length}
+          cardPadCount={cardPadCount}
+          autoplay={3e3}
+          renderCard={this.renderCard}
+        />
+      </React.StrictMode>
     )
   }
 }

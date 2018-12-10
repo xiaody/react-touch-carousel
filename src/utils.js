@@ -16,10 +16,6 @@ export function clamp (n, min, max) {
   return n
 }
 
-export function precision (n, p) {
-  return Math.round(n / p) * p
-}
-
 export function getTouchPosition (e) {
   return {
     x: e.changedTouches[0].pageX,

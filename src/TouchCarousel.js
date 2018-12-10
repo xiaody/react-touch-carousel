@@ -1,9 +1,8 @@
 import React from 'react'
-import Motion from 'react-motion/lib/Motion'
-import spring from 'react-motion/lib/spring'
+import {Spring} from 'react-spring'
 import {
-  range, clamp, precision as roundToPrecision,
-  getTouchPosition, getTouchId, omit, modCursor
+  range, clamp, getTouchPosition,
+  getTouchId, omit, modCursor
 } from './utils'
 
 function TouchMoveRecord (e) {
@@ -24,9 +23,9 @@ const defaultProps = {
   vertical: false,
   renderCard () {},
   precision: 0.001,
+  tension: 200,
+  friction: 25,
   moveScale: 1,
-  stiffness: 200,
-  damping: 25,
   onRest () {},
   onDragStart () {},
   onDragEnd () {},
@@ -154,7 +153,7 @@ class TouchCarousel extends React.PureComponent {
     // So check both.
     if (wasDragging && this.touchMoves.length) {
       const {cardSize, moveScale, vertical} = this.props
-      const damping = this.props.damping / 1e6
+      const friction = this.props.friction / 1e6
       const {touchMoves} = this
       let i = touchMoves.length
       let duration = 0
@@ -164,7 +163,7 @@ class TouchCarousel extends React.PureComponent {
       i++
       const xy = vertical ? 'y' : 'x'
       const touchMoveVelocity = (getTouchPosition(e)[xy] - touchMoves[i][xy]) / duration
-      const momentumDistance = touchMoveVelocity * Math.abs(touchMoveVelocity) / damping / 2
+      const momentumDistance = touchMoveVelocity * Math.abs(touchMoveVelocity) / friction / 2
       const {cursor} = this.state
       const cursorDelta = clamp(
         momentumDistance / cardSize * moveScale,
@@ -297,22 +296,20 @@ class TouchCarousel extends React.PureComponent {
       component: Component,
       cardSize, cardCount,
       cardPadCount, renderCard,
-      stiffness, damping, precision,
+      tension, friction, precision,
       loop,
       ...rest
     } = this.props
     const padCount = loop ? cardPadCount : 0
-    const springConfig = {stiffness, damping, precision}
+    const springConfig = {tension, friction, precision}
     const computedCursor = this.getComputedCursor()
 
     return (
-      <Motion
-        defaultStyle={{cursor: computedCursor}}
-        style={{
-          cursor: this.shouldEnableSpring()
-            ? spring(computedCursor, springConfig)
-            : roundToPrecision(computedCursor, precision)
-        }}
+      <Spring
+        config={springConfig}
+        from={{cursor: computedCursor}}
+        immediate={!this.shouldEnableSpring()}
+        to={{cursor: computedCursor}}
         onRest={this.onSpringRest}
       >
         {({cursor}) => {
@@ -337,7 +334,7 @@ class TouchCarousel extends React.PureComponent {
             </Component>
           )
         }}
-      </Motion>
+      </Spring>
     )
   }
 }

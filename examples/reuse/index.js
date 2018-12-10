@@ -97,15 +97,17 @@ class App extends Component {
     const {renderedData} = this.state
     const CarouselContainer = this.container
     return (
-      <TouchCarousel
-        ref={elt => { this.carousel = elt }}
-        component={CarouselContainer}
-        cardSize={cardSize}
-        cardCount={renderedData.length}
-        loop={false}
-        renderCard={this.renderCard}
-        defaultCursor={this.defaultCursor}
-      />
+      <React.StrictMode>
+        <TouchCarousel
+          ref={elt => { this.carousel = elt }}
+          component={CarouselContainer}
+          cardSize={cardSize}
+          cardCount={renderedData.length}
+          loop={false}
+          renderCard={this.renderCard}
+          defaultCursor={this.defaultCursor}
+        />
+      </React.StrictMode>
     )
   }
 }

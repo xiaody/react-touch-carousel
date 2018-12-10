@@ -81,19 +81,21 @@ class App extends Component {
 
   render () {
     return (
-      <TouchCarousel
-        component={Container}
-        cardSize={cardSize}
-        cardCount={data.length}
-        cardPadCount={cardPadCount}
-        loop={enableLoop}
-        autoplay={enableAutoplay ? 2e3 : false}
-        renderCard={this.renderCard}
-        onRest={index => log(`rest at index ${index}`)}
-        onDragStart={() => log('dragStart')}
-        onDragEnd={() => log('dragEnd')}
-        onDragCancel={() => log('dragCancel')}
-      />
+      <React.StrictMode>
+        <TouchCarousel
+          component={Container}
+          cardSize={cardSize}
+          cardCount={data.length}
+          cardPadCount={cardPadCount}
+          loop={enableLoop}
+          autoplay={enableAutoplay ? 2e3 : false}
+          renderCard={this.renderCard}
+          onRest={index => log(`rest at index ${index}`)}
+          onDragStart={() => log('dragStart')}
+          onDragEnd={() => log('dragEnd')}
+          onDragCancel={() => log('dragCancel')}
+        />
+      </React.StrictMode>
     )
   }
 }
