@@ -59,6 +59,13 @@ class TouchCarousel extends React.PureComponent {
   componentDidMount () {
     this.autoplayIfEnabled()
   }
+  
+  componentDidUpdate (prevProps) {
+    if (prevProps.autoplay!==this.props.autoplay) {
+      this.stopAutoplay()
+      this.autoplayIfEnabled()
+    }
+  }
 
   componentWillUnmount () {
     this.stopAutoplay()
