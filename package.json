@@ -48,18 +48,18 @@
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
     "raw-loader": "0.5.1",
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "standard": "11.0.1",
     "standard-loader": "^6.0.1",
     "style-loader": "0.21.0",
     "uglify-js": "3.4.0",
-    "watchify": "3.11.0",
+    "watchify": "^3.11.1",
     "webpack": "3.6.0",
     "webpack-dev-server": "2.9.1"
   },
   "dependencies": {
-    "react-spring": "^7.1.0"
+    "react-spring": "^8.0.27"
   },
   "standard": {
     "ignore": [
