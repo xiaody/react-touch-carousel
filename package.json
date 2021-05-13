@@ -15,8 +15,7 @@
     "build": "for js in src/*.js; do babel $js > \"lib/$(basename $js)\"; done",
     "list-demo": "cd examples; find . -name index.html | xargs -n1 dirname | xargs -n1 basename",
     "docs": "rm -r docs; PAGES=$(npm run -s list-demo) webpack -p",
-    "dev": "PAGES=$(npm run -s list-demo) webpack-dev-server --hot --inline",
-    "prepare": "npm run build"
+    "dev": "PAGES=$(npm run -s list-demo) webpack-dev-server --hot --inline"
   },
   "keywords": [
     "react",
