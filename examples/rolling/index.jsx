@@ -1,22 +1,23 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import data from '../data'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel from '../../src'
+import TouchCarousel, { clamp } from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const cardSize = 300
-const cardPadCount = 2
+const cardPadCount = 3
+const carouselWidth = clamp(window.innerWidth, 0, 960)
 
 function CarouselContainer (props) {
-  const {cursor, carouselState, ...rest} = props
-  const translateY = (cursor - cardPadCount) * cardSize
+  const { cursor, carouselState, ...rest } = props
+  // Put current card at center
+  const translateX = (cursor - cardPadCount) * cardSize + (carouselWidth - cardSize) / 2
   return (
     <NonPassiveTouchTarget className='carousel-container'>
       <NonPassiveTouchTarget
         className='carousel-track'
-        style={{transform: `translate3d(0, ${translateY}px, 0)`}}
+        style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
         {...rest}
       />
     </NonPassiveTouchTarget>
@@ -26,19 +27,18 @@ function CarouselContainer (props) {
 const Container = touchWithMouseHOC(CarouselContainer)
 
 class App extends Component {
-  renderCard (index, modIndex) {
+  renderCard (index, modIndex, cursor) {
     const item = data[modIndex]
+    const rotate = 40 * (index + cursor)
+    const onTop = Math.abs(index + cursor) < 0.5
     return (
-      <div
-        key={index}
-        className='carousel-card'
-        data-index={index}
-        data-modIndex={modIndex}
-      >
+      <div key={index} className='carousel-card'>
         <div
           className='carousel-card-inner'
           style={{
-            backgroundColor: item.background
+            backgroundColor: item.background,
+            transform: `rotate(${rotate}deg)`,
+            zIndex: onTop ? 1 : 0
           }}
         >
           <div className='carousel-title'>{item.title}</div>
@@ -56,8 +56,7 @@ class App extends Component {
           cardSize={cardSize}
           cardCount={data.length}
           cardPadCount={cardPadCount}
-          autoplay={3e3}
-          vertical
+          autoplay={2e3}
           renderCard={this.renderCard}
         />
       </React.StrictMode>

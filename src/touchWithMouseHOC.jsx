@@ -2,6 +2,7 @@
  * Mouse support. See #4.
  * Maybe worth a separate package like "react-touch-with-mouse"
  */
+/* eslint-disable react/jsx-handler-names */
 import React from 'react'
 
 const mockEventTypes = {
@@ -107,7 +108,7 @@ export default function touchWithMouseHOC (Component, options = {}) {
     }
 
     render () {
-      const {onMouseDown, ...rest} = this.props
+      const { onMouseDown, ...rest } = this.props
       return (
         <Component
           {...rest}

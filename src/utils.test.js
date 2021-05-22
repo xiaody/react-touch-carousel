@@ -1,5 +1,5 @@
 import test from 'ava'
-import {modCursor} from './utils'
+import { modCursor } from './utils'
 
 test('modCursor', t => {
   t.is(modCursor(0.9, 7), -6.1)

@@ -1,24 +1,20 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import data from '../data'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel, {clamp} from '../../src'
+import TouchCarousel from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const cardSize = 300
-const cardPadCount = 3
-const carouselWidth = clamp(window.innerWidth, 0, 960)
+const cardPadCount = 2
 
 function CarouselContainer (props) {
-  const {cursor, carouselState, ...rest} = props
-  // Put current card at center
-  const translateX = (cursor - cardPadCount) * cardSize + (carouselWidth - cardSize) / 2
+  const { cursor, carouselState, ...rest } = props
   return (
     <NonPassiveTouchTarget className='carousel-container'>
       <NonPassiveTouchTarget
         className='carousel-track'
-        style={{transform: `translate3d(${translateX}px, 0, 0)`}}
+        data-cursor={cursor}
         {...rest}
       />
     </NonPassiveTouchTarget>
@@ -29,21 +25,38 @@ const Container = touchWithMouseHOC(CarouselContainer)
 
 class App extends Component {
   renderCard (index, modIndex, cursor) {
+    cursor = -cursor
     const item = data[modIndex]
-    const rotate = 40 * (index + cursor)
-    const onTop = Math.abs(index + cursor) < 0.5
+    const translateCard = index > cursor ? 100 * (index - cursor) : 0
+    const translateText = index < cursor ? 5 * (index - cursor) : 0
+    const translateTitle = translateText * 1.2
+    const scaleTitle = index < cursor ? 1 - 0.1 * (cursor - index) : 1
     return (
-      <div key={index} className='carousel-card'>
+      <div
+        key={index}
+        className='carousel-card'
+        style={{ transform: `translate3d(${translateCard}%, 0, 0)` }}
+        data-index={index}
+        data-mod-index={modIndex}
+      >
         <div
           className='carousel-card-inner'
           style={{
-            backgroundColor: item.background,
-            transform: `rotate(${rotate}deg)`,
-            zIndex: onTop ? 1 : 0
+            backgroundColor: item.background
           }}
         >
-          <div className='carousel-title'>{item.title}</div>
-          <div className='carousel-text'>{item.text}</div>
+          <div
+            className='carousel-title'
+            style={{ transform: `scale(${scaleTitle}) translate3d(${translateTitle}%, 0, 0)` }}
+          >
+            {item.title}
+          </div>
+          <div
+            className='carousel-text'
+            style={{ transform: `translate3d(${translateText}%, 0, 0)` }}
+          >
+            {item.text}
+          </div>
         </div>
       </div>
     )
@@ -57,7 +70,7 @@ class App extends Component {
           cardSize={cardSize}
           cardCount={data.length}
           cardPadCount={cardPadCount}
-          autoplay={2e3}
+          autoplay={3e3}
           renderCard={this.renderCard}
         />
       </React.StrictMode>

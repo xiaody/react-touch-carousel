@@ -1,19 +1,23 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import data from '../data'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel, {clamp} from '../../src'
+import TouchCarousel from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const cardSize = 300
 const cardPadCount = 2
 
 function CarouselContainer (props) {
-  const {cursor, carouselState, ...rest} = props
+  const { cursor, carouselState, ...rest } = props
+  const translateY = (cursor - cardPadCount) * cardSize
   return (
     <NonPassiveTouchTarget className='carousel-container'>
-      <NonPassiveTouchTarget className='carousel-track' {...rest} />
+      <NonPassiveTouchTarget
+        className='carousel-track'
+        style={{ transform: `translate3d(0, ${translateY}px, 0)` }}
+        {...rest}
+      />
     </NonPassiveTouchTarget>
   )
 }
@@ -21,18 +25,14 @@ function CarouselContainer (props) {
 const Container = touchWithMouseHOC(CarouselContainer)
 
 class App extends Component {
-  renderCard (index, modIndex, cursor) {
+  renderCard (index, modIndex) {
     const item = data[modIndex]
-    const opacity = 1 - 1.5 * Math.abs(index + cursor)
-    const zIndex = opacity * data.length
     return (
       <div
         key={index}
         className='carousel-card'
-        style={{
-          opacity: clamp(opacity, 0, 1),
-          zIndex
-        }}
+        data-index={index}
+        data-mod-index={modIndex}
       >
         <div
           className='carousel-card-inner'
@@ -55,9 +55,9 @@ class App extends Component {
           cardSize={cardSize}
           cardCount={data.length}
           cardPadCount={cardPadCount}
-          autoplay={2e3}
+          autoplay={3e3}
+          vertical
           renderCard={this.renderCard}
-          stiffness={100}
         />
       </React.StrictMode>
     )
