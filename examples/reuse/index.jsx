@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+/* eslint-disable react/jsx-handler-names */
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel, {clamp, range} from '../../src'
+import TouchCarousel, { clamp, range } from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const data = range(0, 999).map(n => ({
   title: `Card ${n}`,
@@ -43,7 +43,7 @@ class App extends Component {
 
   modPage = () => {
     const cursor = this.carousel.getCursor()
-    const {page, renderedData} = this.state
+    const { page, renderedData } = this.state
     if (Math.round(cursor) !== cursor) return
     if ( // Do we reach the edge of the window but not the edge of the data?
       (page !== 0 && cursor === 0) ||
@@ -62,7 +62,7 @@ class App extends Component {
   }
 
   container = touchWithMouseHOC((props) => {
-    const {cursor, carouselState, ...rest} = props
+    const { cursor, carouselState, ...rest } = props
     const translateX = cursor * cardSize
     return (
       <NonPassiveTouchTarget
@@ -72,7 +72,7 @@ class App extends Component {
       >
         <NonPassiveTouchTarget
           className='carousel-track'
-          style={{transform: `translate3d(${translateX}px, 0, 0)`}}
+          style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
           {...rest}
         />
       </NonPassiveTouchTarget>
@@ -80,7 +80,7 @@ class App extends Component {
   })
 
   renderCard = (index, _, cursor) => {
-    const {page} = this.state
+    const { page } = this.state
     const item = data[page + index]
 
     return (
@@ -94,7 +94,7 @@ class App extends Component {
   }
 
   render () {
-    const {renderedData} = this.state
+    const { renderedData } = this.state
     const CarouselContainer = this.container
     return (
       <React.StrictMode>

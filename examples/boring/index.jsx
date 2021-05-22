@@ -1,11 +1,10 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import cx from 'classnames'
 import data from '../data'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel, {clamp} from '../../src'
+import TouchCarousel, { clamp } from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const query = window.location.search.slice(1)
 const enableLoop = /\bloop\b/.test(query)
@@ -20,7 +19,7 @@ function log (text) {
 }
 
 function CarouselContainer (props) {
-  const {cursor, carouselState: {active, dragging}, ...rest} = props
+  const { cursor, carouselState: { active, dragging }, ...rest } = props
   let current = -Math.round(cursor) % data.length
   while (current < 0) {
     current += data.length
@@ -39,7 +38,7 @@ function CarouselContainer (props) {
     >
       <NonPassiveTouchTarget
         className='carousel-track'
-        style={{transform: `translate3d(${translateX}px, 0, 0)`}}
+        style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
         {...rest}
       />
 
@@ -70,7 +69,7 @@ class App extends Component {
       >
         <div
           className='carousel-card-inner'
-          style={{backgroundColor: item.background}}
+          style={{ backgroundColor: item.background }}
         >
           <div className='carousel-title'>{item.title}</div>
           <div className='carousel-text'>{item.text}</div>
@@ -104,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const ndRoot = document.getElementById('react-root')
   render(<App />, ndRoot)
 
-  let optionExplain = []
+  const optionExplain = []
   if (enableLoop) {
     optionExplain.push('loop')
   }

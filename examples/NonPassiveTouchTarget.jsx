@@ -13,7 +13,7 @@
  */
 import React from 'react'
 
-const OPTIONS = {passive: false}
+const OPTIONS = { passive: false }
 
 class NonPassiveTouchTarget extends React.Component {
   componentDidMount () {
@@ -36,7 +36,7 @@ class NonPassiveTouchTarget extends React.Component {
   }
 
   render () {
-    const {component: Component, onTouchMove, ...rest} = this.props
+    const { component: Component, onTouchMove, ...rest } = this.props
     return (
       <Component
         ref={this.ref}

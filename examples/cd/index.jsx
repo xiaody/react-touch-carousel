@@ -1,29 +1,30 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+/* eslint-disable react/jsx-handler-names */
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 import cx from 'classnames'
 import data from '../data'
 import NonPassiveTouchTarget from '../NonPassiveTouchTarget'
-import TouchCarousel, {clamp} from '../../src'
+import TouchCarousel, { clamp } from '../../src'
 import touchWithMouseHOC from '../../src/touchWithMouseHOC'
-import './index.css'
 
 const cardSize = 300
 const cardPadCount = 3
 const carouselWidth = clamp(window.innerWidth, 0, 960)
 
 function CarouselContainer (props) {
-  const {cursor, carouselState: {dragging, springing}, ...rest} = props
+  const { cursor, carouselState: { dragging, springing }, ...rest } = props
   // Put current card at center
   const translateX = (cursor - cardPadCount) * cardSize + (carouselWidth - cardSize) / 2
   return (
     <div className={cx('cd-player', {
       'is-dragging': dragging,
       'is-springing': springing
-    })}>
+    })}
+    >
       <NonPassiveTouchTarget className='carousel-container'>
         <NonPassiveTouchTarget
           className='carousel-track'
-          style={{transform: `translate3d(${translateX}px, 0, 0)`}}
+          style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
           {...rest}
         />
       </NonPassiveTouchTarget>
@@ -43,7 +44,7 @@ class App extends Component {
   }
 
   onRest = (index, modIndex) => {
-    this.setState({playing: modIndex})
+    this.setState({ playing: modIndex })
   }
 
   renderCard = (index, modIndex, cursor) => {
@@ -52,12 +53,12 @@ class App extends Component {
     return (
       <div
         key={index}
-        className={cx('carousel-card', {playing})}
+        className={cx('carousel-card', { playing })}
       >
         <div className='carousel-card-inner'>
           <div
             className='carousel-title'
-            style={{backgroundColor: item.background}}
+            style={{ backgroundColor: item.background }}
           >
             CD {modIndex + 1}
           </div>

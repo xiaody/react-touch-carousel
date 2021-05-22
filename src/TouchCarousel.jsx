@@ -1,12 +1,13 @@
+/* eslint-disable react/jsx-handler-names */
 import React from 'react'
-import {Spring} from 'react-spring/renderprops'
+import { Spring } from 'react-spring/renderprops'
 import {
   range, clamp, getTouchPosition,
   getTouchId, omit, modCursor
 } from './utils'
 
 function TouchMoveRecord (e) {
-  const {x, y} = getTouchPosition(e)
+  const { x, y } = getTouchPosition(e)
   this.x = x
   this.y = y
   this.time = Date.now()
@@ -14,7 +15,7 @@ function TouchMoveRecord (e) {
 
 const defaultProps = {
   component: 'div',
-  cardSize: global.innerWidth || 320,
+  cardSize: 320,
   cardCount: 1,
   cardPadCount: 2,
   defaultCursor: 0,
@@ -74,12 +75,12 @@ class TouchCarousel extends React.PureComponent {
   onTouchStart = (e) => {
     const oldTouchCount = this.touchCount
     this.touchCount += e.changedTouches.length
-    this.setState({active: true})
+    this.setState({ active: true })
     this.stopAutoplay()
     this.tracingTouchId = getTouchId(e)
     this.touchMoves = [new TouchMoveRecord(e)]
     this.isMovingCross = null
-    const {cardSize, clickTolerance} = this.props
+    const { cardSize, clickTolerance } = this.props
     // User click a card before it's in place but near, allow the clicking.
     // Otherwise it's only a grab.
     this.grabbing = cardSize * Math.abs(this.usedCursor - this.state.cursor) > clickTolerance
@@ -104,7 +105,7 @@ class TouchCarousel extends React.PureComponent {
     let shouldIgnore = e.defaultPrevented
     if (!shouldIgnore && this.state.active) {
       if (this.isMovingCross == null) {
-        const {vertical, ignoreCrossMove} = this.props
+        const { vertical, ignoreCrossMove } = this.props
         let factor = ignoreCrossMove
         if (typeof factor !== 'number') {
           factor = factor ? 1 : 0
@@ -127,11 +128,11 @@ class TouchCarousel extends React.PureComponent {
     // please use CSS `touch-action` for it.
     e.preventDefault()
 
-    const {cardSize, moveScale, vertical, onDragStart} = this.props
+    const { cardSize, moveScale, vertical, onDragStart } = this.props
     const lastMove = this.touchMoves[this.touchMoves.length - 1]
     const xy = vertical ? 'y' : 'x'
     const distance = touchMove[xy] - lastMove[xy]
-    this.setState({dragging: true}, this.state.dragging ? undefined : onDragStart)
+    this.setState({ dragging: true }, this.state.dragging ? undefined : onDragStart)
     this.setCursor(this.state.cursor + distance / cardSize * moveScale)
 
     this.touchMoves.push(touchMove)
@@ -141,7 +142,7 @@ class TouchCarousel extends React.PureComponent {
   }
 
   onTouchEndOrCancel = (e) => {
-    const {type} = e
+    const { type } = e
     this.touchCount -= e.changedTouches.length
     if (this.touchCount > 0) {
       this.touchMoves = []
@@ -159,9 +160,9 @@ class TouchCarousel extends React.PureComponent {
     // Due to multi-touch, records can be empty even if .dragging is true.
     // So check both.
     if (wasDragging && this.touchMoves.length) {
-      const {cardSize, moveScale, vertical} = this.props
+      const { cardSize, moveScale, vertical } = this.props
       const friction = this.props.friction / 1e6
-      const {touchMoves} = this
+      const { touchMoves } = this
       let i = touchMoves.length
       let duration = 0
       while (--i >= 0 && duration < 100) {
@@ -171,7 +172,7 @@ class TouchCarousel extends React.PureComponent {
       const xy = vertical ? 'y' : 'x'
       const touchMoveVelocity = (getTouchPosition(e)[xy] - touchMoves[i][xy]) / duration
       const momentumDistance = touchMoveVelocity * Math.abs(touchMoveVelocity) / friction / 2
-      const {cursor} = this.state
+      const { cursor } = this.state
       const cursorDelta = clamp(
         momentumDistance / cardSize * moveScale,
         Math.floor(cursor) - cursor,
@@ -184,7 +185,7 @@ class TouchCarousel extends React.PureComponent {
       // Snap the cursor.
       targetCursor = Math.round(this.state.cursor)
     }
-    this.setState({active: false, dragging: false}, () => {
+    this.setState({ active: false, dragging: false }, () => {
       this.setCursor(targetCursor)
       if (wasDragging) {
         this.props[type === 'touchend' ? 'onDragEnd' : 'onDragCancel']()
@@ -196,7 +197,7 @@ class TouchCarousel extends React.PureComponent {
 
   onSpringRest = () => {
     if (!this.shouldEnableSpring()) return
-    this.setState({springing: false})
+    this.setState({ springing: false })
     const cursor = Math.round(this.usedCursor)
     const index = -cursor
     let modIndex = index % this.props.cardCount
@@ -242,7 +243,7 @@ class TouchCarousel extends React.PureComponent {
   setCursor = (cursor) => {
     const springing = this.shouldEnableSpring() && cursor !== this.state.cursor
     return new Promise(resolve => {
-      this.setState({cursor, springing}, resolve)
+      this.setState({ cursor, springing }, resolve)
     })
   }
 
@@ -251,8 +252,8 @@ class TouchCarousel extends React.PureComponent {
   }
 
   getComputedCursor () {
-    const {cardCount, loop, maxOverflow} = this.props
-    const {cursor, dragging} = this.state
+    const { cardCount, loop, maxOverflow } = this.props
+    const { cursor, dragging } = this.state
     let computedCursor = cursor
     if (!loop) {
       computedCursor = clamp(computedCursor, 1 - cardCount, 0)
@@ -271,19 +272,19 @@ class TouchCarousel extends React.PureComponent {
 
   modAs = (cursor) => {
     return new Promise(resolve => {
-      this.setState({moding: true, cursor}, () => {
-        this.setState({moding: false}, resolve)
+      this.setState({ moding: true, cursor }, () => {
+        this.setState({ moding: false }, resolve)
       })
     })
   }
 
   modCursor = () => {
     return new Promise(resolve => {
-      const {loop, cardCount} = this.props
+      const { loop, cardCount } = this.props
       if (!loop) {
         return resolve()
       }
-      const {cursor} = this.state
+      const { cursor } = this.state
       const newCursor = modCursor(cursor, cardCount)
       if (newCursor !== cursor) {
         this.modAs(newCursor).then(resolve)
@@ -294,7 +295,7 @@ class TouchCarousel extends React.PureComponent {
   }
 
   shouldEnableSpring = () => {
-    const {active, moding} = this.state
+    const { active, moding } = this.state
     return !active && !moding
   }
 
@@ -308,18 +309,18 @@ class TouchCarousel extends React.PureComponent {
       ...rest
     } = this.props
     const padCount = loop ? cardPadCount : 0
-    const springConfig = {tension, friction, precision}
+    const springConfig = { tension, friction, precision }
     const computedCursor = this.getComputedCursor()
 
     return (
       <Spring
         config={springConfig}
-        from={{cursor: computedCursor}}
+        from={{ cursor: computedCursor }}
         immediate={!this.shouldEnableSpring()}
-        to={{cursor: computedCursor}}
+        to={{ cursor: computedCursor }}
         onRest={this.onSpringRest}
       >
-        {({cursor}) => {
+        {({ cursor }) => {
           this.usedCursor = cursor
           return (
             <Component
