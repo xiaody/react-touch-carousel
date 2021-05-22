@@ -54,7 +54,7 @@
   "standard": {
     "ignore": [
       "lib",
-      "docs/*.bundle.js"
+      "docs"
     ],
     "parser": "@babel/eslint-parser"
   },

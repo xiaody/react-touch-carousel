@@ -1,0 +1,64 @@
+html,
+body {
+  margin: 0;
+}
+.ui-center {
+  text-align: center;
+}
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  margin: 1em auto;
+}
+h1 {
+  margin: 1.5em;
+  font-size: 24px;
+  text-align: center;
+}
+.carousel-container {
+  height: 300px;
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.carousel-track {
+  position: relative;
+  display: flex;
+  height: 100%;
+}
+.carousel-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  flex: 0 0 300px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+.carousel-card-inner {
+  flex-direction: column;
+  width: 290px;
+  height: 290px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.carousel-title {
+  margin-top: 20px;
+  font-size: 1.5em;
+}
+.carousel-text {
+  padding: 1em 1em 1em 2em;
+  font-size: 14px;
+  white-space: pre-wrap;
+  text-align: left;
+  font-family: sans-serif;
+}
