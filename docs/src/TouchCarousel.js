@@ -247,8 +247,12 @@ class TouchCarousel extends React.PureComponent {
     this.stopAutoplay();
   }
   wrapSubComponents(props) {
-    this.Component = animated(props.component);
-    this.Card = animated(({index, modIndex, cursor, state}) => this.props.renderCard(index, modIndex, cursor, state));
+    this.AnimatedComponent = animated(props.component);
+    const wrappedCard = ({index, modIndex, cursor, state}) => {
+      this.usedCursor = cursor;
+      return this.props.renderCard(index, modIndex, cursor, state);
+    };
+    this.AnimatedCard = animated(wrappedCard);
   }
   getCursor() {
     return this.state.cursor;
@@ -271,7 +275,7 @@ class TouchCarousel extends React.PureComponent {
     return this.usedCursor;
   }
   render() {
-    const {Component, Card} = this;
+    const {AnimatedComponent, AnimatedCard} = this;
     const {
       cardSize,
       cardCount,
@@ -293,8 +297,7 @@ class TouchCarousel extends React.PureComponent {
       to: {cursor: computedCursor},
       onRest: this.onSpringRest
     }, ({cursor}) => {
-      this.usedCursor = cursor.get();
-      return /* @__PURE__ */ React.createElement(Component, {
+      return /* @__PURE__ */ React.createElement(AnimatedComponent, {
         ...omit(rest, propsKeys),
         cursor,
         carouselState: this.state,
@@ -307,7 +310,7 @@ class TouchCarousel extends React.PureComponent {
         while (modIndex < 0) {
           modIndex += cardCount;
         }
-        return /* @__PURE__ */ React.createElement(Card, {
+        return /* @__PURE__ */ React.createElement(AnimatedCard, {
           key: index,
           index,
           modIndex,
