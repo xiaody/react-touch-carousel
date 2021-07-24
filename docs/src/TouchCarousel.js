@@ -218,9 +218,9 @@ class TouchCarousel extends React.PureComponent {
       const {active, moding} = this.state;
       return !active && !moding;
     });
-    this.Component = animated(props.component);
+    this.wrapSubComponents(props);
     this.state = {
-      cursor: props.defaultCursor,
+      cursor: props.defaultCursor + Number.MIN_VALUE,
       active: false,
       dragging: false,
       springing: false,
@@ -242,12 +242,13 @@ class TouchCarousel extends React.PureComponent {
       this.stopAutoplay();
       this.autoplayIfEnabled();
     }
-    if (prevProps.component !== this.props.component) {
-      this.Component = animated(this.props.component);
-    }
   }
   componentWillUnmount() {
     this.stopAutoplay();
+  }
+  wrapSubComponents(props) {
+    this.Component = animated(props.component);
+    this.Card = animated(({index, modIndex, cursor, state}) => this.props.renderCard(index, modIndex, cursor, state));
   }
   getCursor() {
     return this.state.cursor;
@@ -270,7 +271,7 @@ class TouchCarousel extends React.PureComponent {
     return this.usedCursor;
   }
   render() {
-    const {Component} = this;
+    const {Component, Card} = this;
     const {
       cardSize,
       cardCount,
@@ -306,7 +307,13 @@ class TouchCarousel extends React.PureComponent {
         while (modIndex < 0) {
           modIndex += cardCount;
         }
-        return renderCard(index, modIndex, cursor, this.state);
+        return /* @__PURE__ */ React.createElement(Card, {
+          key: index,
+          index,
+          modIndex,
+          cursor,
+          state: this.state
+        });
       }));
     });
   }
