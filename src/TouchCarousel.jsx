@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 import React from 'react'
-import { Spring } from 'react-spring/renderprops'
+import { Spring, animated } from '@react-spring/web'
 import {
   range, clamp, getTouchPosition,
   getTouchId, omit, modCursor
@@ -41,6 +41,7 @@ const propsKeys = Object.keys(defaultProps)
 class TouchCarousel extends React.PureComponent {
   constructor (props) {
     super(props)
+    this.Component = animated(props.component)
     this.state = {
       cursor: props.defaultCursor,
       active: false,
@@ -65,6 +66,9 @@ class TouchCarousel extends React.PureComponent {
     if (prevProps.autoplay !== this.props.autoplay) {
       this.stopAutoplay()
       this.autoplayIfEnabled()
+    }
+    if (prevProps.component !== this.props.component) {
+      this.Component = animated(this.props.component)
     }
   }
 
@@ -300,8 +304,8 @@ class TouchCarousel extends React.PureComponent {
   }
 
   render () {
+    const { Component } = this
     const {
-      component: Component,
       cardSize, cardCount,
       cardPadCount, renderCard,
       tension, friction, precision,
@@ -321,7 +325,7 @@ class TouchCarousel extends React.PureComponent {
         onRest={this.onSpringRest}
       >
         {({ cursor }) => {
-          this.usedCursor = cursor
+          this.usedCursor = cursor.get()
           return (
             <Component
               {...omit(rest, propsKeys)}
