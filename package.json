@@ -1,6 +1,6 @@
 {
   "name": "react-touch-carousel",
-  "version": "0.9.4",
+  "version": "0.10.0",
   "description": "Micro carousel framework for React.JS",
   "main": "lib/index.js",
   "files": [
@@ -45,11 +45,11 @@
     "lint-staged": "^11",
     "react": "^17",
     "react-dom": "^17",
-    "snowpack": "^3.5.1",
+    "snowpack": "^3.8.3",
     "standard": "^16.0.3"
   },
   "dependencies": {
-    "react-spring": "^8.0.27"
+    "@react-spring/web": "^9.2.4"
   },
   "standard": {
     "ignore": [
