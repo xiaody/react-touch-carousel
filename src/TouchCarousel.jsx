@@ -75,10 +75,12 @@ class TouchCarousel extends React.PureComponent {
   }
 
   wrapSubComponents (props) {
-    this.Component = animated(props.component)
-    this.Card = animated(
-      ({ index, modIndex, cursor, state }) => this.props.renderCard(index, modIndex, cursor, state)
-    )
+    this.AnimatedComponent = animated(props.component)
+    const wrappedCard = ({ index, modIndex, cursor, state }) => {
+      this.usedCursor = cursor
+      return this.props.renderCard(index, modIndex, cursor, state)
+    }
+    this.AnimatedCard = animated(wrappedCard)
   }
 
   onTouchStart = (e) => {
@@ -309,7 +311,7 @@ class TouchCarousel extends React.PureComponent {
   }
 
   render () {
-    const { Component, Card } = this
+    const { AnimatedComponent, AnimatedCard } = this
     const {
       cardSize, cardCount,
       cardPadCount, renderCard,
@@ -330,9 +332,8 @@ class TouchCarousel extends React.PureComponent {
         onRest={this.onSpringRest}
       >
         {({ cursor }) => {
-          this.usedCursor = cursor.get()
           return (
-            <Component
+            <AnimatedComponent
               {...omit(rest, propsKeys)}
               cursor={cursor}
               carouselState={this.state}
@@ -346,9 +347,9 @@ class TouchCarousel extends React.PureComponent {
                 while (modIndex < 0) {
                   modIndex += cardCount
                 }
-                return <Card key={index} index={index} modIndex={modIndex} cursor={cursor} state={this.state} />
+                return <AnimatedCard key={index} index={index} modIndex={modIndex} cursor={cursor} state={this.state} />
               })}
-            </Component>
+            </AnimatedComponent>
           )
         }}
       </Spring>
