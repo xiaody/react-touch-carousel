@@ -1,8 +1,8 @@
 {
   "imports": {
+    "@react-spring/web": "./@react-spring/web.js",
     "classnames": "./classnames.js",
     "react": "./react.js",
-    "react-dom": "./react-dom.js",
-    "react-spring/renderprops": "./react-spring/renderprops.js"
+    "react-dom": "./react-dom.js"
   }
 }

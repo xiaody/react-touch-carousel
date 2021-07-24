@@ -5,7 +5,7 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 import React from "../_snowpack/pkg/react.js";
-import {Spring} from "../_snowpack/pkg/react-spring/renderprops.js";
+import {Spring, animated} from "../_snowpack/pkg/@react-spring/web.js";
 import {
   range,
   clamp,
@@ -218,6 +218,7 @@ class TouchCarousel extends React.PureComponent {
       const {active, moding} = this.state;
       return !active && !moding;
     });
+    this.Component = animated(props.component);
     this.state = {
       cursor: props.defaultCursor,
       active: false,
@@ -240,6 +241,9 @@ class TouchCarousel extends React.PureComponent {
     if (prevProps.autoplay !== this.props.autoplay) {
       this.stopAutoplay();
       this.autoplayIfEnabled();
+    }
+    if (prevProps.component !== this.props.component) {
+      this.Component = animated(this.props.component);
     }
   }
   componentWillUnmount() {
@@ -266,8 +270,8 @@ class TouchCarousel extends React.PureComponent {
     return this.usedCursor;
   }
   render() {
+    const {Component} = this;
     const {
-      component: Component,
       cardSize,
       cardCount,
       cardPadCount,
@@ -288,7 +292,7 @@ class TouchCarousel extends React.PureComponent {
       to: {cursor: computedCursor},
       onRest: this.onSpringRest
     }, ({cursor}) => {
-      this.usedCursor = cursor;
+      this.usedCursor = cursor.get();
       return /* @__PURE__ */ React.createElement(Component, {
         ...omit(rest, propsKeys),
         cursor,
