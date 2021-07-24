@@ -41,9 +41,10 @@ const propsKeys = Object.keys(defaultProps)
 class TouchCarousel extends React.PureComponent {
   constructor (props) {
     super(props)
-    this.Component = animated(props.component)
+    this.wrapSubComponents(props)
     this.state = {
-      cursor: props.defaultCursor,
+      // hack: add MIN_VALUE or react-spring v9 fails autoplay
+      cursor: props.defaultCursor + Number.MIN_VALUE,
       active: false,
       dragging: false,
       springing: false,
@@ -67,13 +68,17 @@ class TouchCarousel extends React.PureComponent {
       this.stopAutoplay()
       this.autoplayIfEnabled()
     }
-    if (prevProps.component !== this.props.component) {
-      this.Component = animated(this.props.component)
-    }
   }
 
   componentWillUnmount () {
     this.stopAutoplay()
+  }
+
+  wrapSubComponents (props) {
+    this.Component = animated(props.component)
+    this.Card = animated(
+      ({ index, modIndex, cursor, state }) => this.props.renderCard(index, modIndex, cursor, state)
+    )
   }
 
   onTouchStart = (e) => {
@@ -304,7 +309,7 @@ class TouchCarousel extends React.PureComponent {
   }
 
   render () {
-    const { Component } = this
+    const { Component, Card } = this
     const {
       cardSize, cardCount,
       cardPadCount, renderCard,
@@ -341,7 +346,7 @@ class TouchCarousel extends React.PureComponent {
                 while (modIndex < 0) {
                   modIndex += cardCount
                 }
-                return renderCard(index, modIndex, cursor, this.state)
+                return <Card key={index} index={index} modIndex={modIndex} cursor={cursor} state={this.state} />
               })}
             </Component>
           )
