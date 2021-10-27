@@ -6,66 +6,166 @@
     <title>react touch carousel</title>
     <meta name="viewport" content="width=device-width">
     <style>
-      body {
-        margin: 8px auto;
-        width: 960px;
-        max-width: calc(100vw - 20px);
-        color: #333;
-      }
-      h1 {
-        margin: .2em auto;
-        font-size: 24px;
-      }
+     body {
+       background-color:#C6D1DC;
+     }
+      
       a {
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
       }
+
+
+      .main__body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color:#C6D1DC;
+      }
+
+      .header__div {
+        color:#035397;
+
+      
+      }
+      .header__div h1 {
+        font-size: 35px;
+      }
+      .header__div p {
+        font-size: 16px;
+      }
+
+      .content__div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        margin-top: 2em;
+      }
+
+      .cards__div {
+        width: 60%;
+      }
+
+      .cards__div h3 {
+        color:#035397;
+        text-align:center;
+      }
       .page-list {
         list-style: none;
         display: flex;
-        flex-direction: column;
-        margin: 0;
+        flex-wrap: wrap;
+        justify-content:flex-start;
+        align-items: center;
         padding: 0;
       }
-      .entry-link {
+      .page-list a {
+        height: 10em;
+        width: 10em;
+        background-color: #f5f5f5;
+        margin: 1em;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+       border-radius: 5px;
+       background-color: #787A91;
+         text-decoration: none;
+
+      }
+      .entry-link li{
         display: block;
         margin: .1em auto;
         padding: .8em;
         border-radius: 5px;
         text-indent: .5em;
         text-decoration: none;
-        color: #38e;
-        background-color: #f5f5f5;
+        color: #f5f5f5;
+        background-color: #787A91;
         transition: all 0.2s;
+      
       }
       .entry-link:active {
         background-color: #d8d8d8;
       }
+
+      .qr__div {
+        display: flex;
+        flex-direction:column;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+
+      
+      }
+      .qr__div p {
+        color:#035397;
+        font-weight: 600;
+      }
+      .qr__div div {
+        color:#035397;
+        font-weight: 600;
+      }
+      .qr__div div a{
+        margin-top:2em;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-flow: column nowrap;
+      }
+      .github-icon {
+        height: 2.8em;
+        width: 3em;
+        margin-top: -1em;
+      }
+
+      @media (max-width: 600px) {
+        .cards__div {
+          width: 100%;
+        }
+      }
     </style>
   </head>
 
-  <body ontouchstart="">
-    <main>
-      <h1>react-touch-carousel</h1>
-      <p>Micro carousel framework for React.JS</p>
-      <p>See some demos below<span hidden data-mobile-tip> on a mobile device</span></p>
-      <image hidden data-mobile-tip src="./docs-qrcode.png" alt="Scan qrcode to open this page on phones">
-      <ul class="page-list">
-        <li><a class="entry-link" href="./boring/index.html">boring</a></li>
-        <li><a class="entry-link" href="./boring/index.html?loop&autoplay">loop & autoplay</a></li>
-        <li><a class="entry-link" href="./vertical/index.html">vertical</a></li>
-        <li><a class="entry-link" href="./cascade/index.html">cascade</a></li>
-        <li><a class="entry-link" href="./rolling/index.html">rolling</a></li>
-        <li><a class="entry-link" href="./fade/index.html">fade</a></li>
-        <li><a class="entry-link" href="./reuse/index.html">card reuse</a></li>
-        <li><a class="entry-link" href="./cd/index.html">playing cd</a></li>
-      </ul>
+  <body ontouchstart="" >
+    <main class="main__body">
+      <div class="header__div">
+        <h1>react-touch-carousel</h1>
+        <p>Micro carousel framework for React.JS</p>
+      </div>
+      <div class="content__div">
+        <div class="cards__div">
+          <h3>Carousel examples</h3>
+          <ul class="page-list">
+            <a class="entry-link" href="./boring/index.html"><li>boring</li></a>
+            <a class="entry-link" href="./boring/index.html?loop&autoplay"><li>loop & autoplay</li></a>
+            <a class="entry-link" href="./vertical/index.html"><li>vertical</li></a>
+            <a class="entry-link" href="./cascade/index.html"><li>cascade</li></a>
+            <a class="entry-link" href="./rolling/index.html"><li>rolling</li></a>
+            <a class="entry-link" href="./fade/index.html"><li>fade</li></a>
+            <a class="entry-link" href="./reuse/index.html"><li>card reuse</li></a>
+            <a class="entry-link" href="./cd/index.html"><li>playing cd</li></a>
+          </ul>
+        </div>
+        <div class='qr__div'>
+<p>See some demos<span hidden data-mobile-tip> on a mobile device</span></p>
+<image hidden data-mobile-tip src="./docs-qrcode.png" alt="Scan qrcode to open this page on phones" style="margin-top: 2em;">
 
-      <p>
-        <a href="https://github.com/xiaody/react-touch-carousel">
-          Fork me at GitHub.
-        </a>
-      </p>
+
+  <div>
+    <a href="https://github.com/xiaody/react-touch-carousel" style="text-decoration:none; color:#035397">
+      Fork me at GitHub.
+    </a>
+    <a href="https://github.com/xiaody/react-touch-carousel" style="text-decoration:none; color:#035397">
+      <img src='../src/resources/icons/github-icon.png' alt='fork at github' class="github-icon">
+    </a>
+  </div>
+        </div>
+        
+      </div>
+     
+      
     </main>
     <script>
     if (!/mobile|android/i.test(navigator.userAgent)) {
