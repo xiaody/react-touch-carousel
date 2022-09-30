@@ -39,7 +39,7 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@babel/register": "^7.13.16",
-    "ava": "^3.15",
+    "ava": "^4.3",
     "classnames": "^2.3.1",
     "husky": "^1.2.0",
     "lint-staged": "^11",
